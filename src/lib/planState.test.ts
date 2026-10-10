@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { DEFAULT_STATE, decodeState, encodeState, raceMeters, sanitizeState, type PlanState } from "./planState";
+import { DEFAULT_STATE, decodeState, encodeState, raceMeters, sanitizeState, syncGoal, type PlanState } from "./planState";
+import { formatTime, toUnits } from "./pace";
 
 describe("sanitizeState", () => {
   it("falls back to defaults for garbage input", () => {
@@ -52,6 +53,25 @@ describe("share links", () => {
   it("ignores URLs that are not plans", () => {
     expect(decodeState("")).toBeNull();
     expect(decodeState("?utm_source=x")).toBeNull();
+  });
+});
+
+describe("syncGoal", () => {
+  it("turns the average pace into the matching finish time", () => {
+    const state: PlanState = { ...DEFAULT_STATE, goalType: "pace", targetPace: 8 * 60 };
+    const synced = syncGoal(state, "finish");
+    const units = toUnits(raceMeters(state), "mi");
+    expect(synced.finishSeconds).toBe(Math.round(8 * 60 * units));
+    expect(formatTime(synced.finishSeconds, true)).toBe(formatTime(state.targetPace * units, true));
+    expect(synced.targetPace).toBe(state.targetPace);
+  });
+
+  it("turns the finish time into the matching average pace", () => {
+    const state: PlanState = { ...DEFAULT_STATE, goalType: "finish", finishSeconds: 1 * 3600 + 50 * 60 };
+    const synced = syncGoal(state, "pace");
+    const units = toUnits(raceMeters(state), "mi");
+    expect(synced.targetPace).toBe(Math.round(state.finishSeconds / units));
+    expect(formatTime(synced.targetPace)).toBe(formatTime(state.finishSeconds / units));
   });
 });
 

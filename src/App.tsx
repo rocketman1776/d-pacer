@@ -31,6 +31,7 @@ import {
   loadStoredState,
   raceMeters,
   storeState,
+  syncGoal,
   type PlanMode,
   type PlanState,
 } from "./lib/planState";
@@ -66,6 +67,9 @@ export default function App() {
         next.targetPace = Math.round(convertPace(prev.targetPace, prev.unit, patch.unit));
         next.warmUpSeconds = Math.round(convertPace(prev.warmUpSeconds, prev.unit, patch.unit));
         next.manualPaces = resamplePaces(prev.manualPaces, prev.unit, patch.unit, raceMeters(prev));
+      }
+      if (patch.goalType && patch.goalType !== prev.goalType) {
+        Object.assign(next, syncGoal(next, patch.goalType));
       }
       return next;
     });

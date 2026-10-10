@@ -7,6 +7,7 @@ import {
   RACES,
   STRATEGIES,
   UNIT_METERS,
+  toUnits,
   type RaceId,
   type Strategy,
   type Unit,
@@ -59,6 +60,22 @@ export const MAX_PACE_SECONDS = 99 * 60 + 59;
 export function raceMeters(state: Pick<PlanState, "race" | "customDistance" | "customUnit">) {
   if (state.race === "custom") return state.customDistance * UNIT_METERS[state.customUnit];
   return RACES.find((race) => race.id === state.race)!.meters;
+}
+
+/** Keep finish time and average pace describing the same goal when the tab changes. */
+export function syncGoal(state: PlanState, goalType: GoalType): Pick<PlanState, "finishSeconds" | "targetPace"> {
+  const units = toUnits(raceMeters(state), state.unit);
+  if (!(units > 0)) return { finishSeconds: state.finishSeconds, targetPace: state.targetPace };
+  if (goalType === "finish") {
+    return {
+      finishSeconds: Math.min(MAX_GOAL_SECONDS, Math.round(state.targetPace * units)),
+      targetPace: state.targetPace,
+    };
+  }
+  return {
+    finishSeconds: state.finishSeconds,
+    targetPace: Math.min(MAX_PACE_SECONDS, Math.max(0, Math.round(state.finishSeconds / units))),
+  };
 }
 
 const isUnit = (value: unknown): value is Unit => value === "mi" || value === "km";

@@ -31,6 +31,9 @@ export interface PlanState {
   holdUnits: number;
   /** Seconds per display unit; null means "use the goal pace". */
   manualPaces: (number | null)[];
+  warmUpEnabled: boolean;
+  /** Seconds for the first mile or kilometer when the warm-up is on. */
+  warmUpSeconds: number;
 }
 
 export const DEFAULT_STATE: PlanState = {
@@ -46,6 +49,8 @@ export const DEFAULT_STATE: PlanState = {
   strength: 5,
   holdUnits: 2,
   manualPaces: [],
+  warmUpEnabled: false,
+  warmUpSeconds: 10 * 60,
 };
 
 export const MAX_GOAL_SECONDS = 99 * 3600 + 59 * 60 + 59;
@@ -93,6 +98,8 @@ export function sanitizeState(raw: unknown): PlanState {
             return Number.isNaN(value) ? null : Math.round(value);
           })
       : [],
+    warmUpEnabled: input.warmUpEnabled === true || input.warmUpEnabled === "1" || input.warmUpEnabled === "true",
+    warmUpSeconds: Math.round(numberIn(input.warmUpSeconds, 1, MAX_PACE_SECONDS, d.warmUpSeconds)),
   };
 }
 
@@ -128,6 +135,8 @@ const PARAM_KEYS = {
   strength: "k",
   holdUnits: "h",
   manualPaces: "mp",
+  warmUpEnabled: "w",
+  warmUpSeconds: "ws",
 } as const satisfies Record<keyof PlanState, string>;
 
 export function encodeState(state: PlanState) {
@@ -146,6 +155,10 @@ export function encodeState(state: PlanState) {
     params.set(PARAM_KEYS.strategy, state.strategy);
     params.set(PARAM_KEYS.strength, String(state.strength));
     if (state.strategy === "progression") params.set(PARAM_KEYS.holdUnits, String(state.holdUnits));
+    if (state.warmUpEnabled) {
+      params.set(PARAM_KEYS.warmUpEnabled, "1");
+      params.set(PARAM_KEYS.warmUpSeconds, String(state.warmUpSeconds));
+    }
   } else {
     params.set(PARAM_KEYS.manualPaces, state.manualPaces.map((pace) => pace ?? "").join("."));
   }

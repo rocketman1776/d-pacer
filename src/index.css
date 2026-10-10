@@ -520,6 +520,64 @@ input::-webkit-inner-spin-button { appearance: none; }
   font-weight: 700;
 }
 
+.warm-up-control.divided {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #d9e3eb;
+}
+
+.warm-up-toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.warm-up-toggle > span:first-child { display: flex; flex-direction: column; }
+.warm-up-toggle strong { font-size: 11px; }
+.warm-up-toggle span span { margin-top: 3px; color: #7c8fa0; font-size: 9px; line-height: 1.3; }
+
+.warm-up-switch {
+  position: relative;
+  flex: none;
+  width: 42px;
+  height: 26px;
+  border-radius: 999px;
+  background: #c5d0da;
+}
+
+.warm-up-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(24, 62, 92, 0.25);
+}
+
+.warm-up-toggle.active .warm-up-switch { background: #f75f20; }
+.warm-up-toggle.active .warm-up-switch::after { left: 19px; }
+
+.warm-up-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.warm-up-entry > span { color: #031e4d; font-size: 11px; font-weight: 750; }
+
 .section-help { margin: -5px 0 0 40px; color: #768a9c; font-size: 11px; line-height: 1.45; }
 .manual-section { margin-bottom: 22px; }
 
@@ -823,6 +881,10 @@ input::-webkit-inner-spin-button { appearance: none; }
 .dark .strength-slider::-webkit-slider-thumb { background: #f75f20; border-color: #181818; }
 .dark .hold-control { border-top-color: #333; }
 .dark .hold-control select { border-color: #333; background: #141414; color: #fff; }
+.dark .warm-up-control.divided { border-top-color: #333; }
+.dark .warm-up-toggle span span { color: #a0a0a0; }
+.dark .warm-up-switch { background: #3a3a3a; }
+.dark .warm-up-entry > span { color: #fff; }
 .dark .plan-section { background: #141414; }
 .dark .bottom-summary { background: #101010; }
 

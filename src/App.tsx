@@ -64,6 +64,7 @@ export default function App() {
       const next = { ...prev, ...patch };
       if (patch.unit && patch.unit !== prev.unit) {
         next.targetPace = Math.round(convertPace(prev.targetPace, prev.unit, patch.unit));
+        next.warmUpSeconds = Math.round(convertPace(prev.warmUpSeconds, prev.unit, patch.unit));
         next.manualPaces = resamplePaces(prev.manualPaces, prev.unit, patch.unit, raceMeters(prev));
       }
       return next;
@@ -103,8 +104,19 @@ export default function App() {
             strategy: state.strategy,
             strength: state.strength,
             holdUnits: state.holdUnits,
+            warmUpSeconds: state.warmUpEnabled ? state.warmUpSeconds : undefined,
           }),
-    [isManual, totalUnits, manualPaces, goalSeconds, state.strategy, state.strength, state.holdUnits],
+    [
+      isManual,
+      totalUnits,
+      manualPaces,
+      goalSeconds,
+      state.strategy,
+      state.strength,
+      state.holdUnits,
+      state.warmUpEnabled,
+      state.warmUpSeconds,
+    ],
   );
   const planCheckpoints = useMemo(() => checkpoints(plan, totalMeters, unit), [plan, totalMeters, unit]);
   const finalTime = plan.at(-1)?.elapsed ?? 0;
@@ -205,7 +217,16 @@ export default function App() {
 
         <GoalSection averagePace={averagePace} goalSeconds={goalSeconds} state={state} step={3} update={update} />
 
-        {!isManual && <StrategySection maxHold={maxHold} state={state} step={4} update={update} />}
+        {!isManual && (
+          <StrategySection
+            goalSeconds={goalSeconds}
+            maxHold={maxHold}
+            state={state}
+            step={4}
+            totalUnits={totalUnits}
+            update={update}
+          />
+        )}
 
         <SplitsSection
           averageGoalPace={averagePace}
@@ -218,6 +239,7 @@ export default function App() {
           onResetPaces={() => update({ manualPaces: [] })}
           onShare={sharePlan}
           plan={plan}
+          warmUp={state.warmUpEnabled && !isManual}
           raceName={raceName}
           shareStatus={shareStatus}
           strategyName={strategyName}

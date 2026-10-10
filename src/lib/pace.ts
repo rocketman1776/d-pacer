@@ -63,6 +63,18 @@ export function maxHoldUnits(totalUnits: number) {
   return Math.max(1, Math.floor(totalUnits / 2));
 }
 
+function paceFactor(strategy: Strategy, index: number, rows: number, hold: number, intensity: number) {
+  const progress = rows === 1 ? 0.5 : index / (rows - 1);
+  if (strategy === "negative") return 1 + (0.5 - progress) * 2 * intensity;
+  if (strategy === "positive") return 1 - (0.5 - progress) * 2 * intensity;
+  if (strategy === "progression") {
+    const group = Math.floor(index / hold);
+    const groups = Math.max(1, Math.ceil(rows / hold) - 1);
+    return 1 + (0.5 - group / groups) * 2 * intensity;
+  }
+  return 1;
+}
+
 function accumulate(distances: number[], paces: number[]): Split[] {
   let elapsed = 0;
   let covered = 0;
@@ -74,12 +86,19 @@ function accumulate(distances: number[], paces: number[]): Split[] {
   });
 }
 
+/** Longest warm-up, in seconds, that still leaves a runnable pace for the rest of the race. */
+export function maxWarmUpSeconds(totalUnits: number, goalSeconds: number) {
+  if (!(totalUnits > 1 + EPSILON) || !(goalSeconds > 0)) return 0;
+  return Math.max(0, Math.floor(goalSeconds - (totalUnits - 1)));
+}
+
 export function generatePlan({
   totalUnits,
   goalSeconds,
   strategy,
   strength,
   holdUnits,
+  warmUpSeconds,
 }: {
   totalUnits: number;
   goalSeconds: number;
@@ -87,31 +106,31 @@ export function generatePlan({
   /** Percent difference between the first and last segment, e.g. 5. */
   strength: number;
   holdUnits: number;
+  /** Seconds for the first full unit. Omitted when the warm-up mile is off. */
+  warmUpSeconds?: number;
 }): Split[] {
   const distances = segmentDistances(totalUnits);
   if (distances.length === 0 || !(goalSeconds > 0)) return [];
 
-  const rows = distances.length;
   const intensity = strength / 100;
   const hold = Math.max(1, Math.min(holdUnits, maxHoldUnits(totalUnits)));
+  const warmUpDistance = distances[0];
+  const warmUpLimit = maxWarmUpSeconds(totalUnits, goalSeconds);
+  const useWarmUp =
+    warmUpSeconds != null && warmUpSeconds > 0 && warmUpLimit > 0 && warmUpDistance >= 1 - EPSILON;
 
-  const factors = distances.map((_, index) => {
-    const progress = rows === 1 ? 0.5 : index / (rows - 1);
-    if (strategy === "negative") return 1 + (0.5 - progress) * 2 * intensity;
-    if (strategy === "positive") return 1 - (0.5 - progress) * 2 * intensity;
-    if (strategy === "progression") {
-      const group = Math.floor(index / hold);
-      const groups = Math.max(1, Math.ceil(rows / hold) - 1);
-      return 1 + (0.5 - group / groups) * 2 * intensity;
-    }
-    return 1;
-  });
+  const lockedTime = useWarmUp ? Math.min(warmUpSeconds * warmUpDistance, warmUpLimit) : 0;
+  const freeDistances = useWarmUp ? distances.slice(1) : distances;
+  const freeUnits = totalUnits - (useWarmUp ? warmUpDistance : 0);
+  const freeGoal = goalSeconds - lockedTime;
+  const factors = freeDistances.map((_, index) => paceFactor(strategy, index, freeDistances.length, hold, intensity));
 
   // Normalise so the distance-weighted average pace hits the goal exactly.
   const weightedAverage =
-    factors.reduce((sum, factor, index) => sum + factor * distances[index], 0) / totalUnits;
-  const averagePace = goalSeconds / totalUnits;
-  const paces = factors.map((factor) => (averagePace * factor) / weightedAverage);
+    factors.reduce((sum, factor, index) => sum + factor * freeDistances[index], 0) / freeUnits;
+  const averagePace = freeGoal / freeUnits;
+  const freePaces = factors.map((factor) => (averagePace * factor) / weightedAverage);
+  const paces = useWarmUp ? [lockedTime / warmUpDistance, ...freePaces] : freePaces;
 
   return accumulate(distances, paces);
 }

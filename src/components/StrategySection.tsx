@@ -1,21 +1,28 @@
-import { MAX_STRENGTH, MIN_STRENGTH, STRATEGIES, UNIT_LABELS } from "../lib/pace";
+import { MAX_STRENGTH, MIN_STRENGTH, STRATEGIES, UNIT_LABELS, maxWarmUpSeconds } from "../lib/pace";
 import type { PlanState } from "../lib/planState";
+import { PaceInput } from "./fields";
 import SectionTitle from "./SectionTitle";
 
 export default function StrategySection({
   state,
   step,
   maxHold,
+  totalUnits,
+  goalSeconds,
   update,
 }: {
   state: PlanState;
   step: number;
   maxHold: number;
+  totalUnits: number;
+  goalSeconds: number;
   update: (patch: Partial<PlanState>) => void;
 }) {
-  const { strategy, strength, unit } = state;
+  const { strategy, strength, unit, warmUpEnabled } = state;
   const hold = Math.min(state.holdUnits, maxHold);
   const unitLabel = UNIT_LABELS[unit];
+  const warmUpLimit = maxWarmUpSeconds(totalUnits, goalSeconds);
+  const warmUpSeconds = Math.min(state.warmUpSeconds, warmUpLimit || state.warmUpSeconds);
 
   return (
     <section aria-labelledby="strategy-heading" className="flow-section">
@@ -36,8 +43,9 @@ export default function StrategySection({
         ))}
       </div>
 
-      {strategy !== "even" && (
-        <div className="strategy-controls">
+      <div className="strategy-controls">
+        {strategy !== "even" && (
+          <>
           <div className="control-heading">
             <div>
               <strong id="strength-label">{strategy === "progression" ? "Progression strength" : "Split strength"}</strong>
@@ -78,8 +86,36 @@ export default function StrategySection({
               </select>
             </div>
           )}
-        </div>
-      )}
+          </>
+        )}
+
+        {warmUpLimit > 0 && (
+          <div className={`warm-up-control ${strategy === "even" ? "" : "divided"}`}>
+            <button
+              aria-pressed={warmUpEnabled}
+              className={`warm-up-toggle ${warmUpEnabled ? "active" : ""}`}
+              onClick={() => update({ warmUpEnabled: !warmUpEnabled })}
+              type="button"
+            >
+              <span>
+                <strong>Warm-up {unitLabel.singular}</strong>
+                <span>Start easier so your legs can warm up. Your goal time and pace stay the same.</span>
+              </span>
+              <span aria-hidden="true" className="warm-up-switch" />
+            </button>
+            {warmUpEnabled && (
+              <div className="warm-up-entry">
+                <span>This {unitLabel.singular}</span>
+                <PaceInput
+                  label={`Warm-up ${unitLabel.singular}`}
+                  seconds={warmUpSeconds}
+                  onChange={(seconds) => update({ warmUpSeconds: Math.min(warmUpLimit, Math.max(1, Math.round(seconds))) })}
+                />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </section>
   );
 }

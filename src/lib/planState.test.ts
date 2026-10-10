@@ -40,6 +40,15 @@ describe("share links", () => {
     expect(decoded.manualPaces).toEqual([320, null, 340]);
   });
 
+  it("round-trips a warm-up mile without changing the goal", () => {
+    const state: PlanState = { ...DEFAULT_STATE, warmUpEnabled: true, warmUpSeconds: 630 };
+    const decoded = decodeState(encodeState(state))!;
+    expect(decoded.warmUpEnabled).toBe(true);
+    expect(decoded.warmUpSeconds).toBe(630);
+    expect(decoded.finishSeconds).toBe(state.finishSeconds);
+    expect(decoded.targetPace).toBe(state.targetPace);
+  });
+
   it("ignores URLs that are not plans", () => {
     expect(decodeState("")).toBeNull();
     expect(decodeState("?utm_source=x")).toBeNull();

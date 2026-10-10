@@ -78,6 +78,30 @@ describe("generatePlan", () => {
   it("returns an empty plan without a goal", () => {
     expect(generatePlan({ totalUnits: 10, goalSeconds: 0, strategy: "even", strength: 5, holdUnits: 1 })).toEqual([]);
   });
+
+  it.each(strategies)("%s plan still finishes on the goal when the warm-up mile changes", (strategy) => {
+    const easy = generatePlan({
+      totalUnits: 10,
+      goalSeconds: 5000,
+      strategy,
+      strength: 6,
+      holdUnits: 2,
+      warmUpSeconds: 560,
+    });
+    const long = generatePlan({
+      totalUnits: 10,
+      goalSeconds: 5000,
+      strategy,
+      strength: 6,
+      holdUnits: 2,
+      warmUpSeconds: 720,
+    });
+    expect(easy[0].pace).toBeCloseTo(560, 6);
+    expect(long[0].pace).toBeCloseTo(720, 6);
+    expect(easy.at(-1)!.elapsed).toBeCloseTo(5000, 6);
+    expect(long.at(-1)!.elapsed).toBeCloseTo(5000, 6);
+    expect(long[1].pace).toBeLessThan(easy[1].pace);
+  });
 });
 
 describe("manualPlan", () => {

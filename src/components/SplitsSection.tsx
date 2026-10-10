@@ -17,6 +17,7 @@ export default function SplitsSection({
   onResetPaces,
   onShare,
   onPrint,
+  warmUp = false,
 }: {
   plan: Split[];
   checkpoints: Checkpoint[];
@@ -32,6 +33,7 @@ export default function SplitsSection({
   onResetPaces: () => void;
   onShare: () => void;
   onPrint: () => void;
+  warmUp?: boolean;
 }) {
   const unitLabel = UNIT_LABELS[unit];
   const totalUnits = plan.reduce((sum, split) => sum + split.distance, 0);
@@ -106,7 +108,13 @@ export default function SplitsSection({
                 <div className="table-row" key={split.index} role="row">
                   <div className="mile-cell" role="cell">
                     <span>{isPartial ? <FlagIcon /> : split.index + 1}</span>
-                    <small>{isPartial ? `${split.distance.toFixed(2)} ${unitLabel.short}` : unitLabel.singular}</small>
+                    <small>
+                      {warmUp && split.index === 0 && !isPartial
+                        ? "warm-up"
+                        : isPartial
+                          ? `${split.distance.toFixed(2)} ${unitLabel.short}`
+                          : unitLabel.singular}
+                    </small>
                   </div>
                   <div role="cell">
                     {manual ? (

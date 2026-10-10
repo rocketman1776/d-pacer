@@ -1,0 +1,22 @@
+# Pushing beta updates dpacer.app/beta by redeploying the main production build.
+# That build publishes main at / and the beta branch at /beta.
+name: Publish beta to dpacer.app/beta
+
+on:
+  push:
+    branches: [beta]
+
+jobs:
+  redeploy-production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Redeploy production
+        env:
+          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$VERCEL_DEPLOY_HOOK" ]; then
+            echo "VERCEL_DEPLOY_HOOK is not set, so this workflow did not redeploy main."
+            echo "dpacer.app/beta stays on the last production build until main is redeployed."
+            exit 0
+          fi
+          curl --fail-with-body -X POST "$VERCEL_DEPLOY_HOOK"

@@ -31,6 +31,12 @@ pnpm build        # production build in dist/
 pnpm preview      # serve the production build
 ```
 
+## Beta and live
+
+`main` is the live app at [dpacer.app](https://dpacer.app). The `beta` branch is the test app at [dpacer.app/beta](https://dpacer.app/beta), with a Beta banner under the logo. Saved plans stay separate between the two.
+
+Push the `beta` branch to update the test app. When that version is ready, merge `beta` into `main` to publish it live.
+
 ## Project layout
 
 - `src/lib/pace.ts` – pure pace calculations: segments, strategies, checkpoints, unit conversion, formatting

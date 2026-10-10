@@ -1,0 +1,8 @@
+{
+  "buildCommand": "node scripts/build-site.mjs",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/beta", "destination": "/beta/index.html" },
+    { "source": "/beta/", "destination": "/beta/index.html" }
+  ]
+}

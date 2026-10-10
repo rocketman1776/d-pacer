@@ -139,8 +139,11 @@ export default function App() {
 
       <section className="phone-frame">
         <header className="topbar">
-          <div className="header-logo-crop">
-            <img alt="DPACER" className="header-logo" height={51} src={isDark ? dpacerLogoDark : dpacerLogo} width={180} />
+          <div className="brand">
+            <div className="header-logo-crop">
+              <img alt="DPACER" className="header-logo" height={51} src={isDark ? dpacerLogoDark : dpacerLogo} width={180} />
+            </div>
+            {isBeta && <p className="beta-banner">Beta</p>}
           </div>
           <div className="top-actions">
             <div aria-label="Pace units" className="unit-switch" role="group">
@@ -166,13 +169,6 @@ export default function App() {
             </button>
           </div>
         </header>
-
-        {isBeta && (
-          <p className="beta-banner">
-            <span>Beta. Try changes here. Plans you save stay off the live app.</span>
-            <a href="/">Open live app</a>
-          </p>
-        )}
 
         <div className="intro">
           <p>

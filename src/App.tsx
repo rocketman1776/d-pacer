@@ -192,7 +192,7 @@ export default function App() {
           <p>
             {fromLink
               ? "You're viewing a shared plan. Any changes you make are saved on this device."
-              : `Build a ${unitLabel.singular}-by-${unitLabel.singular} plan that matches how you want to ${unit === "mi" ? "pace your run" : "run your race"}.`}
+              : `Build a ${unitLabel.singular}-by-${unitLabel.singular} plan that matches how you want to pace your run.`}
           </p>
         </div>
 

@@ -1,4 +1,4 @@
-import { UNIT_LABELS, formatDelta, formatTime, type Checkpoint, type Split, type Unit } from "../lib/pace";
+import { UNIT_LABELS, formatDelta, formatDistance, formatTime, type Checkpoint, type Split, type Unit } from "../lib/pace";
 import { PaceInput } from "./fields";
 import { FlagIcon, PrintIcon, ShareIcon } from "./icons";
 
@@ -104,18 +104,21 @@ export default function SplitsSection({
             </div>
             {plan.map((split) => {
               covered += split.distance;
-              const isPartial = split.distance < 0.999;
+              const isHalf = Math.abs(split.distance - 0.5) < 0.001;
+              const isPartial = !isHalf && split.distance < 0.999;
               const rowDelta = split.elapsed - averageGoalPace * covered;
               return (
                 <div className="table-row" key={split.index} role="row">
                   <div className="mile-cell" role="cell">
                     <span>{isPartial ? <FlagIcon /> : split.index + 1}</span>
                     <small>
-                      {warmUp && split.index === 0 && !isPartial
+                      {warmUp && split.index === 0 && !isPartial && !isHalf
                         ? "warm-up"
-                        : isPartial
-                          ? `${split.distance.toFixed(2)} ${unitLabel.short}`
-                          : unitLabel.singular}
+                        : isHalf
+                          ? `${formatDistance(split.distance)} ${unitLabel.short}`
+                          : isPartial
+                            ? `${split.distance.toFixed(2)} ${unitLabel.short}`
+                            : unitLabel.singular}
                     </small>
                   </div>
                   <div role="cell">
@@ -130,7 +133,7 @@ export default function SplitsSection({
                         <small>/{unitLabel.short}</small>
                       </div>
                     ) : (
-                      <strong className={`pace-value${warmUp && split.index === 0 && !isPartial ? " warm-up-pace" : ""}`}>
+                      <strong className={`pace-value${warmUp && split.index === 0 && !isPartial && !isHalf ? " warm-up-pace" : ""}`}>
                         {formatTime(split.pace)} <small>/{unitLabel.short}</small>
                       </strong>
                     )}

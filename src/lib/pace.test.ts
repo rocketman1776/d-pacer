@@ -75,6 +75,20 @@ describe("generatePlan", () => {
     expect(paces[6]).toBeLessThan(paces[3]);
   });
 
+  it("splits one mile or kilometer in half for positive, negative, and progression", () => {
+    for (const strategy of ["negative", "positive", "progression"] as Strategy[]) {
+      const plan = generatePlan({ totalUnits: 1, goalSeconds: 600, strategy, strength: 6, holdUnits: 1 });
+      expect(plan.map((split) => split.distance)).toEqual([0.5, 0.5]);
+      expect(plan.at(-1)!.elapsed).toBeCloseTo(600, 6);
+    }
+    const negative = generatePlan({ totalUnits: 1, goalSeconds: 600, strategy: "negative", strength: 6, holdUnits: 1 });
+    const positive = generatePlan({ totalUnits: 1, goalSeconds: 600, strategy: "positive", strength: 6, holdUnits: 1 });
+    expect(negative[1].pace).toBeLessThan(negative[0].pace);
+    expect(positive[1].pace).toBeGreaterThan(positive[0].pace);
+    const even = generatePlan({ totalUnits: 1, goalSeconds: 600, strategy: "even", strength: 6, holdUnits: 1 });
+    expect(even.map((split) => split.distance)).toEqual([1]);
+  });
+
   it("returns an empty plan without a goal", () => {
     expect(generatePlan({ totalUnits: 10, goalSeconds: 0, strategy: "even", strength: 5, holdUnits: 1 })).toEqual([]);
   });

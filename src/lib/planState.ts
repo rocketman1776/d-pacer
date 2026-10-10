@@ -85,6 +85,12 @@ const isRace = (value: unknown): value is PlanState["race"] =>
 const isStrategy = (value: unknown): value is Strategy =>
   STRATEGIES.some((strategy) => strategy.id === value);
 
+function clampDistance(value: unknown, fallback: number) {
+  const number = typeof value === "string" && value.trim() !== "" ? Number(value) : value;
+  if (typeof number !== "number" || !Number.isFinite(number)) return fallback;
+  return Math.min(MAX_DISTANCE, Math.max(MIN_DISTANCE, number));
+}
+
 function numberIn(value: unknown, min: number, max: number, fallback: number) {
   const number = typeof value === "string" && value.trim() !== "" ? Number(value) : value;
   return typeof number === "number" && Number.isFinite(number) && number >= min && number <= max
@@ -98,7 +104,7 @@ export function sanitizeState(raw: unknown): PlanState {
   const d = DEFAULT_STATE;
   return {
     race: isRace(input.race) ? input.race : d.race,
-    customDistance: numberIn(input.customDistance, MIN_DISTANCE, MAX_DISTANCE, d.customDistance),
+    customDistance: clampDistance(input.customDistance, d.customDistance),
     customUnit: isUnit(input.customUnit) ? input.customUnit : d.customUnit,
     unit: isUnit(input.unit) ? input.unit : d.unit,
     planMode: input.planMode === "manual" ? "manual" : "generated",

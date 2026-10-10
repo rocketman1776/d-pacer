@@ -19,6 +19,7 @@ import {
   generatePlan,
   manualPlan,
   maxHoldUnits,
+  maxWarmUpSeconds,
   resamplePaces,
   segmentDistances,
   toUnits,
@@ -250,7 +251,7 @@ export default function App() {
           onResetPaces={() => update({ manualPaces: [] })}
           onShare={sharePlan}
           plan={plan}
-          warmUp={state.warmUpEnabled && !isManual}
+          warmUp={state.warmUpEnabled && !isManual && maxWarmUpSeconds(totalUnits, goalSeconds) > 0}
           raceName={raceName}
           shareStatus={shareStatus}
           strategyName={strategyName}

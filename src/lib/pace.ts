@@ -24,7 +24,7 @@ export const STRATEGIES: { id: Strategy; name: string; description: string }[] =
   { id: "progression", name: "Progression", description: "Increase pace in stages" },
 ];
 
-export const MIN_DISTANCE = 0.1;
+export const MIN_DISTANCE = 1;
 export const MAX_DISTANCE = 200;
 export const MIN_STRENGTH = 2;
 export const MAX_STRENGTH = 12;
@@ -57,6 +57,12 @@ export function segmentDistances(totalUnits: number): number[] {
   if (!(totalUnits > EPSILON)) return [];
   const rows = Math.ceil(totalUnits - EPSILON);
   return Array.from({ length: rows }, (_, index) => Math.min(1, totalUnits - index));
+}
+
+/** One mile or kilometer is two half splits, except even pace, which stays one segment. */
+function planDistances(totalUnits: number, strategy: Strategy): number[] {
+  if (strategy !== "even" && Math.abs(totalUnits - 1) <= 0.001) return [0.5, 0.5];
+  return segmentDistances(totalUnits);
 }
 
 export function maxHoldUnits(totalUnits: number) {
@@ -109,7 +115,7 @@ export function generatePlan({
   /** Seconds for the first full unit. Omitted when the warm-up mile is off. */
   warmUpSeconds?: number;
 }): Split[] {
-  const distances = segmentDistances(totalUnits);
+  const distances = planDistances(totalUnits, strategy);
   if (distances.length === 0 || !(goalSeconds > 0)) return [];
 
   const intensity = strength / 100;

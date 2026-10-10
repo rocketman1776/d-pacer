@@ -76,6 +76,11 @@ describe("syncGoal", () => {
 });
 
 describe("raceMeters", () => {
+  it("keeps a custom distance of at least 1", () => {
+    expect(sanitizeState({ race: "custom", customDistance: 0.4 }).customDistance).toBe(1);
+    expect(sanitizeState({ race: "custom", customDistance: 1 }).customDistance).toBe(1);
+  });
+
   it("uses the custom unit for custom distances", () => {
     expect(raceMeters({ race: "custom", customDistance: 10, customUnit: "km" })).toBe(10000);
     expect(raceMeters({ race: "half", customDistance: 10, customUnit: "km" })).toBe(21097.5);

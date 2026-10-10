@@ -49,7 +49,9 @@ export default function DistanceSection({
               max={MAX_DISTANCE}
               min={MIN_DISTANCE}
               value={state.customDistance}
-              onChange={(customDistance) => update({ customDistance })}
+              onChange={(customDistance) =>
+                update(customDistance === 1 ? { customDistance, unit: state.customUnit } : { customDistance })
+              }
             />
           </label>
           <div aria-label="Distance unit" className="unit-toggle" role="group">
@@ -58,7 +60,7 @@ export default function DistanceSection({
                 aria-pressed={state.customUnit === unit}
                 className={state.customUnit === unit ? "active" : ""}
                 key={unit}
-                onClick={() => update({ customUnit: unit })}
+                onClick={() => update(state.customDistance === 1 ? { customUnit: unit, unit } : { customUnit: unit })}
                 type="button"
               >
                 {unit === "mi" ? "Miles" : "Kilometers"}

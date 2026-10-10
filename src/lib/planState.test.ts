@@ -58,7 +58,7 @@ describe("share links", () => {
 
 describe("syncGoal", () => {
   it("turns the average pace into the matching finish time", () => {
-    const state: PlanState = { ...DEFAULT_STATE, goalType: "pace", targetPace: 8 * 60 };
+    const state: PlanState = { ...DEFAULT_STATE, race: "half", goalType: "pace", targetPace: 8 * 60 };
     const synced = syncGoal(state, "finish");
     const units = toUnits(raceMeters(state), "mi");
     expect(synced.finishSeconds).toBe(Math.round(8 * 60 * units));
@@ -67,7 +67,7 @@ describe("syncGoal", () => {
   });
 
   it("turns the finish time into the matching average pace", () => {
-    const state: PlanState = { ...DEFAULT_STATE, goalType: "finish", finishSeconds: 1 * 3600 + 50 * 60 };
+    const state: PlanState = { ...DEFAULT_STATE, race: "half", goalType: "finish", finishSeconds: 1 * 3600 + 50 * 60 };
     const synced = syncGoal(state, "pace");
     const units = toUnits(raceMeters(state), "mi");
     expect(synced.targetPace).toBe(Math.round(state.finishSeconds / units));

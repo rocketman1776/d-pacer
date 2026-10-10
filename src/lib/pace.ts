@@ -19,8 +19,8 @@ export type RaceId = (typeof RACES)[number]["id"];
 
 export const STRATEGIES: { id: Strategy; name: string; description: string }[] = [
   { id: "even", name: "Even pace", description: "Hold one steady effort" },
-  { id: "negative", name: "Negative split", description: "Finish faster than you start" },
   { id: "positive", name: "Positive split", description: "Start faster, ease later" },
+  { id: "negative", name: "Negative split", description: "Finish faster than you start" },
   { id: "progression", name: "Progression", description: "Increase pace in stages" },
 ];
 

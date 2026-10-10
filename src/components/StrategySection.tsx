@@ -23,6 +23,8 @@ export default function StrategySection({
   const unitLabel = UNIT_LABELS[unit];
   const warmUpLimit = maxWarmUpSeconds(totalUnits, goalSeconds);
   const warmUpSeconds = Math.min(state.warmUpSeconds, warmUpLimit || state.warmUpSeconds);
+  const showStrength = strategy !== "even";
+  const showWarmUp = warmUpLimit > 0;
 
   return (
     <section aria-labelledby="strategy-heading" className="flow-section">
@@ -43,8 +45,9 @@ export default function StrategySection({
         ))}
       </div>
 
+      {(showStrength || showWarmUp) && (
       <div className="strategy-controls">
-        {strategy !== "even" && (
+        {showStrength && (
           <>
           <div className="control-heading">
             <div>
@@ -89,7 +92,7 @@ export default function StrategySection({
           </>
         )}
 
-        {warmUpLimit > 0 && (
+        {showWarmUp && (
           <div className={`warm-up-control ${strategy === "even" ? "" : "divided"}`}>
             <button
               aria-pressed={warmUpEnabled}
@@ -116,6 +119,7 @@ export default function StrategySection({
           </div>
         )}
       </div>
+      )}
     </section>
   );
 }

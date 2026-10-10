@@ -86,9 +86,11 @@ export default function App() {
   const isManual = planMode === "manual";
 
   const raceName =
-    state.race === "custom"
-      ? `${formatDistance(state.customDistance)} ${UNIT_LABELS[state.customUnit].short}`
-      : RACES.find((race) => race.id === state.race)!.name;
+    state.race === "none"
+      ? ""
+      : state.race === "custom"
+        ? `${formatDistance(state.customDistance)} ${UNIT_LABELS[state.customUnit].short}`
+        : RACES.find((race) => race.id === state.race)!.name;
   const strategyName = isManual ? "Custom" : STRATEGIES.find((item) => item.id === state.strategy)!.name;
 
   // Unrounded so untouched splits add up exactly to the goal time.
@@ -235,6 +237,11 @@ export default function App() {
         <SplitsSection
           averageGoalPace={averagePace}
           checkpoints={planCheckpoints}
+          emptyHint={
+            state.race === "none"
+              ? "Choose a race distance and your splits will appear here."
+              : undefined
+          }
           finalTime={finalTime}
           goalSeconds={goalSeconds}
           manual={isManual}

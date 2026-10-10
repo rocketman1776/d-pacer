@@ -17,7 +17,7 @@ export type PlanMode = "generated" | "manual";
 export type GoalType = "finish" | "pace";
 
 export interface PlanState {
-  race: RaceId | "custom";
+  race: RaceId | "custom" | "none";
   customDistance: number;
   customUnit: Unit;
   unit: Unit;
@@ -38,15 +38,15 @@ export interface PlanState {
 }
 
 export const DEFAULT_STATE: PlanState = {
-  race: "half",
+  race: "none",
   customDistance: 15,
   customUnit: "mi",
   unit: "mi",
   planMode: "generated",
   goalType: "finish",
-  finishSeconds: 1 * 3600 + 50 * 60,
-  targetPace: 8 * 60 + 24,
-  strategy: "negative",
+  finishSeconds: 0,
+  targetPace: 0,
+  strategy: "even",
   strength: 5,
   holdUnits: 2,
   manualPaces: [],
@@ -58,6 +58,7 @@ export const MAX_GOAL_SECONDS = 99 * 3600 + 59 * 60 + 59;
 export const MAX_PACE_SECONDS = 99 * 60 + 59;
 
 export function raceMeters(state: Pick<PlanState, "race" | "customDistance" | "customUnit">) {
+  if (state.race === "none") return 0;
   if (state.race === "custom") return state.customDistance * UNIT_METERS[state.customUnit];
   return RACES.find((race) => race.id === state.race)!.meters;
 }
@@ -80,7 +81,7 @@ export function syncGoal(state: PlanState, goalType: GoalType): Pick<PlanState, 
 
 const isUnit = (value: unknown): value is Unit => value === "mi" || value === "km";
 const isRace = (value: unknown): value is PlanState["race"] =>
-  value === "custom" || RACES.some((race) => race.id === value);
+  value === "custom" || value === "none" || RACES.some((race) => race.id === value);
 const isStrategy = (value: unknown): value is Strategy =>
   STRATEGIES.some((strategy) => strategy.id === value);
 
@@ -120,7 +121,7 @@ export function sanitizeState(raw: unknown): PlanState {
   };
 }
 
-const STORAGE_KEY = storageKey("plan:v1");
+const STORAGE_KEY = storageKey("plan:v2");
 
 export function loadStoredState(): PlanState | null {
   try {

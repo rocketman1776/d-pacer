@@ -18,6 +18,7 @@ export default function SplitsSection({
   onShare,
   onPrint,
   warmUp = false,
+  emptyHint = "Set a goal above and your splits will appear here.",
 }: {
   plan: Split[];
   checkpoints: Checkpoint[];
@@ -34,6 +35,7 @@ export default function SplitsSection({
   onShare: () => void;
   onPrint: () => void;
   warmUp?: boolean;
+  emptyHint?: string;
 }) {
   const unitLabel = UNIT_LABELS[unit];
   const totalUnits = plan.reduce((sum, split) => sum + split.distance, 0);
@@ -64,7 +66,7 @@ export default function SplitsSection({
       </div>
 
       {plan.length === 0 ? (
-        <p className="plan-empty">Set a goal above and your splits will appear here.</p>
+        <p className="plan-empty">{emptyHint}</p>
       ) : (
         <>
           <div className="plan-summary">

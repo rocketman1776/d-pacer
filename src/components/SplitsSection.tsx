@@ -1,6 +1,7 @@
 import { UNIT_LABELS, formatDelta, formatTime, type Checkpoint, type Split, type Unit } from "../lib/pace";
 import { PaceInput } from "./fields";
 import { FlagIcon, PrintIcon, ShareIcon } from "./icons";
+import PaceChart from "./PaceChart";
 
 export default function SplitsSection({
   plan,
@@ -168,6 +169,8 @@ export default function SplitsSection({
               </ul>
             </div>
           )}
+
+          <PaceChart plan={plan} unit={unit} />
 
           <div className="plan-actions">
             <button onClick={onShare} type="button">

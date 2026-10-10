@@ -885,6 +885,10 @@ input::-webkit-inner-spin-button { appearance: none; }
 .dark .warm-up-toggle span span { color: #a0a0a0; }
 .dark .warm-up-switch { background: #3a3a3a; }
 .dark .warm-up-entry > span { color: #fff; }
+.dark .warm-up-entry .pace-input input,
+.dark .warm-up-entry .pace-input > span,
+.dark .warm-up-pace,
+.dark .warm-up-pace small { color: #f75f20; }
 .dark .plan-section { background: #141414; }
 .dark .bottom-summary { background: #101010; }
 

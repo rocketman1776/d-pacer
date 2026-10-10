@@ -128,7 +128,7 @@ export default function SplitsSection({
                         <small>/{unitLabel.short}</small>
                       </div>
                     ) : (
-                      <strong className="pace-value">
+                      <strong className={`pace-value${warmUp && split.index === 0 && !isPartial ? " warm-up-pace" : ""}`}>
                         {formatTime(split.pace)} <small>/{unitLabel.short}</small>
                       </strong>
                     )}

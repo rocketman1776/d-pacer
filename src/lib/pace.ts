@@ -187,7 +187,7 @@ export function checkpoints(plan: Split[], totalMeters: number, unit: Unit): Che
   const sameAsHalfway = points.find(({ meters }) => Math.abs(meters - halfway) < 50);
   if (sameAsHalfway) {
     sameAsHalfway.label =
-      sameAsHalfway.label === "Half marathon" ? "Half Marathon - Halfway" : `${sameAsHalfway.label} · halfway`;
+      sameAsHalfway.label === "Half marathon" ? "Half Marathon" : `${sameAsHalfway.label} · halfway`;
   } else {
     points.push({ label: "Halfway", meters: halfway });
   }

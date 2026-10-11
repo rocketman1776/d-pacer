@@ -637,8 +637,22 @@ input::-webkit-inner-spin-button { appearance: none; }
 
 .plan-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  gap: 12px;
+}
+
+.plan-title { min-width: 0; }
+
+.plan-unit { margin-top: 10px; }
+
+.plan-section .plan-unit { background: rgba(255, 255, 255, 0.14); }
+
+.plan-section .plan-unit button { color: #d5e3ee; }
+
+.plan-section .plan-unit button.active {
+  background: #f75f20;
+  color: #031e4d;
 }
 
 .finish-chip {
@@ -1022,6 +1036,12 @@ input::-webkit-inner-spin-button { appearance: none; }
 .dark .unit-toggle { background: #141414; }
 .dark .unit-toggle button { color: #a0a0a0; }
 .dark .unit-toggle button.active {
+  background: #f75f20;
+  color: #031e4d;
+}
+.dark .plan-section .plan-unit { background: rgba(255, 255, 255, 0.14); }
+.dark .plan-section .plan-unit button { color: #d5e3ee; }
+.dark .plan-section .plan-unit button.active {
   background: #f75f20;
   color: #031e4d;
 }

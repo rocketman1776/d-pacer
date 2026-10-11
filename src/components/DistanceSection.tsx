@@ -68,7 +68,7 @@ export default function DistanceSection({
           >
             <strong>{race.name}</strong>
             <span>
-              {formatDistance(toUnits(race.meters, state.unit))} {UNIT_LABELS[state.unit].short}
+              {formatDistance(toUnits(race.meters, "mi"))} {UNIT_LABELS.mi.short}
             </span>
           </button>
         ))}

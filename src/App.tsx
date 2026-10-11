@@ -368,6 +368,7 @@ function Planner({
           onSaveAsNew={signedIn && activeWorkout ? openSaveAsNew : undefined}
           saveBusy={saveBusy}
           onShare={sharePlan}
+          onUnitChange={(nextUnit) => update({ unit: nextUnit })}
           plan={plan}
           saving={
             saveOpen

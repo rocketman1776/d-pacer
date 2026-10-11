@@ -15,9 +15,10 @@ describe("sanitizeState", () => {
     expect(state.manualPaces).toEqual([300, null, null, 310]);
   });
 
-  it("uses the custom unit for a custom race", () => {
+  it("keeps the split unit separate from a custom distance", () => {
     const state = sanitizeState({ ...DEFAULT_STATE, race: "custom", customUnit: "km", unit: "mi" });
-    expect(state.unit).toBe("km");
+    expect(state.customUnit).toBe("km");
+    expect(state.unit).toBe("mi");
   });
 });
 

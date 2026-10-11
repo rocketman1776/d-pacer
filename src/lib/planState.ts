@@ -108,7 +108,7 @@ export function sanitizeState(raw: unknown): PlanState {
     race,
     customDistance: clampDistance(input.customDistance, d.customDistance),
     customUnit,
-    unit: race === "custom" ? customUnit : isUnit(input.unit) ? input.unit : d.unit,
+    unit: isUnit(input.unit) ? input.unit : d.unit,
     planMode: input.planMode === "manual" ? "manual" : "generated",
     goalType: input.goalType === "pace" ? "pace" : "finish",
     finishSeconds: Math.round(numberIn(input.finishSeconds, 0, MAX_GOAL_SECONDS, d.finishSeconds)),

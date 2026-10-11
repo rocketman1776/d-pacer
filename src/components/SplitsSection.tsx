@@ -17,6 +17,7 @@ export default function SplitsSection({
   onResetPaces,
   onShare,
   onPrint,
+  onUnitChange,
   onSave,
   onSaveAsNew,
   saveBusy = false,
@@ -38,6 +39,7 @@ export default function SplitsSection({
   onResetPaces: () => void;
   onShare: () => void;
   onPrint: () => void;
+  onUnitChange: (unit: Unit) => void;
   onSave?: () => void;
   onSaveAsNew?: () => void;
   saveBusy?: boolean;
@@ -62,11 +64,24 @@ export default function SplitsSection({
   return (
     <section aria-labelledby="plan-heading" className="plan-section">
       <div className="plan-header">
-        <div>
+        <div className="plan-title">
           <p className="eyebrow">{manual ? "Live calculation" : "Your race plan"}</p>
           <h2 id="plan-heading">
             {unit === "mi" ? "Mile-by-mile" : "Kilometer-by-kilometer"} splits
           </h2>
+          <div aria-label="Split unit" className="unit-toggle plan-unit" role="group">
+            {(["mi", "km"] as Unit[]).map((option) => (
+              <button
+                aria-pressed={unit === option}
+                className={unit === option ? "active" : ""}
+                key={option}
+                onClick={() => onUnitChange(option)}
+                type="button"
+              >
+                {UNIT_LABELS[option].short}
+              </button>
+            ))}
+          </div>
         </div>
         <div aria-live="polite" className="finish-chip">
           <span>Finish</span>

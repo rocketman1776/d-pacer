@@ -65,7 +65,7 @@ export default function SplitsSection({
     <section aria-labelledby="plan-heading" className="plan-section">
       <div className="plan-header">
         <div className="plan-title">
-          <p className="eyebrow">{manual ? "Live calculation" : "Your race plan"}</p>
+          <p className="eyebrow">{manual ? "Live calculation" : "Your run plan"}</p>
           <div className="plan-heading-row">
             <h2 id="plan-heading">{unit === "mi" ? "Mile" : "Kilometer"} splits</h2>
             <div aria-label="Split unit" className="unit-toggle plan-unit" role="group">

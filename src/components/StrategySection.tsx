@@ -28,7 +28,7 @@ export default function StrategySection({
 
   return (
     <section aria-labelledby="strategy-heading" className="flow-section">
-      <SectionTitle eyebrow="Race strategy" id="strategy-heading" step={step} title="How do you want to race?" />
+      <SectionTitle eyebrow="Race strategy" id="strategy-heading" step={step} title="How do you want to run?" />
       <div className="strategy-grid">
         {STRATEGIES.map((item) => (
           <button

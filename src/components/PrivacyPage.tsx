@@ -44,7 +44,7 @@ export default function PrivacyPage() {
             Signing in creates an account with your name, email, and profile photo. Google sends those if you use Google. X sends your name and photo, and your email if you allow it. With email sign-in, we keep what you enter.
           </p>
           <p>
-            Clerk stores that account so we can sign you in and show the runs you save. A saved run is the name you give it and the plan: distance, pace, finish time, and strategy.
+            That account is stored so we can sign you in and show the runs you save. A saved run is the name you give it and the plan: distance, pace, finish time, and strategy.
           </p>
           <p>
             The plan you are working on stays in this browser, so it is still here when you come back. If you share a link, anyone with that link can open the plan.
@@ -52,7 +52,7 @@ export default function PrivacyPage() {
 
           <h2>Visits</h2>
           <p>
-            We count visits with Vercel. A visit includes the page, where it came from, the browser, and the country. It does not include your name, email, or saved runs.
+            We count visits. A visit includes the page, where it came from, the browser, and the country. It does not include your name, email, or saved runs.
           </p>
 
           <h2>What we do not do</h2>

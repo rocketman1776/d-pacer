@@ -34,23 +34,26 @@ function betaCspMeta(): Plugin {
   };
 }
 
-/** Vercel serves privacy/index.html at /privacy, including under the /beta build. */
-function privacyPageFile(): Plugin {
+/** Vercel serves privacy/index.html and terms/index.html, including under the /beta build. */
+function legalPageFiles(): Plugin {
   return {
-    name: "privacy-page-file",
+    name: "legal-page-files",
     apply: "build",
     writeBundle(options) {
       if (!options.dir) return;
-      const privacyDir = path.join(options.dir, "privacy");
-      mkdirSync(privacyDir, { recursive: true });
-      copyFileSync(path.join(options.dir, "index.html"), path.join(privacyDir, "index.html"));
+      const indexHtml = path.join(options.dir, "index.html");
+      for (const page of ["privacy", "terms"]) {
+        const pageDir = path.join(options.dir, page);
+        mkdirSync(pageDir, { recursive: true });
+        copyFileSync(indexHtml, path.join(pageDir, "index.html"));
+      }
     },
   };
 }
 
 export default defineConfig({
   base: process.env.BASE_PATH || "/",
-  plugins: [betaCspMeta(), privacyPageFile(), react(), tailwindcss()],
+  plugins: [betaCspMeta(), legalPageFiles(), react(), tailwindcss()],
   resolve: {
     alias: {
       "@": path.resolve(projectRoot, "src"),

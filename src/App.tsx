@@ -7,6 +7,7 @@ import GoalSection from "./components/GoalSection";
 import { MoonIcon, SunIcon } from "./components/icons";
 import PaceBand from "./components/PaceBand";
 import PrivacyPage, { isPrivacyPath } from "./components/PrivacyPage";
+import TermsPage, { isTermsPath } from "./components/TermsPage";
 import SectionTitle from "./components/SectionTitle";
 import SavedWorkouts from "./components/SavedWorkouts";
 import SplitsSection from "./components/SplitsSection";
@@ -423,9 +424,10 @@ function Planner({
             <span>Estimated finish</span>
             <strong>{plan.length ? formatTime(finalTime, true) : "–"}</strong>
           </div>
-          <a className="privacy-link" href={`${import.meta.env.BASE_URL}privacy`}>
-            Privacy
-          </a>
+          <div className="legal-links">
+            <a href={`${import.meta.env.BASE_URL}privacy`}>Privacy</a>
+            <a href={`${import.meta.env.BASE_URL}terms`}>Terms</a>
+          </div>
         </div>
       </section>
 
@@ -459,6 +461,7 @@ function ClerkPlanner() {
 
 export default function App() {
   if (isPrivacyPath()) return <PrivacyPage />;
+  if (isTermsPath()) return <TermsPage />;
   if (!clerkEnabled) return <Planner />;
   return <ClerkPlanner />;
 }

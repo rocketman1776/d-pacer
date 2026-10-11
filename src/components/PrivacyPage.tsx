@@ -35,7 +35,7 @@ export default function PrivacyPage() {
           </div>
         </header>
 
-        <article className="privacy-page">
+        <article className="legal-page">
           <h1>Privacy</h1>
           <p className="updated">Last updated October 11, 2026</p>
 

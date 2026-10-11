@@ -644,7 +644,13 @@ input::-webkit-inner-spin-button { appearance: none; }
 
 .plan-title { min-width: 0; }
 
-.plan-unit { margin-top: 10px; }
+.plan-heading-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.plan-unit { flex: 0 0 auto; }
 
 .plan-section .plan-unit { background: rgba(255, 255, 255, 0.14); }
 

@@ -66,21 +66,21 @@ export default function SplitsSection({
       <div className="plan-header">
         <div className="plan-title">
           <p className="eyebrow">{manual ? "Live calculation" : "Your race plan"}</p>
-          <h2 id="plan-heading">
-            {unit === "mi" ? "Mile-by-mile" : "Kilometer-by-kilometer"} splits
-          </h2>
-          <div aria-label="Split unit" className="unit-toggle plan-unit" role="group">
-            {(["mi", "km"] as Unit[]).map((option) => (
-              <button
-                aria-pressed={unit === option}
-                className={unit === option ? "active" : ""}
-                key={option}
-                onClick={() => onUnitChange(option)}
-                type="button"
-              >
-                {UNIT_LABELS[option].short}
-              </button>
-            ))}
+          <div className="plan-heading-row">
+            <h2 id="plan-heading">{unit === "mi" ? "Mile-by-mile" : "Km-by-km"} splits</h2>
+            <div aria-label="Split unit" className="unit-toggle plan-unit" role="group">
+              {(["mi", "km"] as Unit[]).map((option) => (
+                <button
+                  aria-pressed={unit === option}
+                  className={unit === option ? "active" : ""}
+                  key={option}
+                  onClick={() => onUnitChange(option)}
+                  type="button"
+                >
+                  {UNIT_LABELS[option].short}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
         <div aria-live="polite" className="finish-chip">

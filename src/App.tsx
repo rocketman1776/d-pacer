@@ -366,12 +366,16 @@ function Planner({
 
         <div className="bottom-summary">
           <div>
-            <span>Estimated finish</span>
-            <strong>{plan.length ? formatTime(finalTime, true) : "–"}</strong>
+            <span>Distance</span>
+            <strong>{totalUnits > 0 ? `${formatDistance(totalUnits)} ${unitLabel.short}` : "–"}</strong>
           </div>
           <div>
             <span>Average pace</span>
             <strong>{plan.length ? `${formatTime(finalTime / totalUnits)} /${unitLabel.short}` : "–"}</strong>
+          </div>
+          <div>
+            <span>Estimated finish</span>
+            <strong>{plan.length ? formatTime(finalTime, true) : "–"}</strong>
           </div>
         </div>
       </section>

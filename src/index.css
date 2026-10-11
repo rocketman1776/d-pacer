@@ -769,7 +769,9 @@ input::-webkit-inner-spin-button { appearance: none; }
 .mile-cell small, .elapsed-cell small, .pace-value small, .manual-pace small { margin-top: 2px; color: #96afc3; font-size: 8px; font-weight: 500; }
 
 .pace-value { font-size: 13px; font-variant-numeric: tabular-nums; }
+.table-row > .elapsed-cell { flex-direction: row; align-items: baseline; justify-content: center; gap: 3px; }
 .elapsed-cell strong { font-size: 12px; font-variant-numeric: tabular-nums; }
+.table-row > .elapsed-cell small { margin-top: 0; }
 
 .manual-pace { display: flex; align-items: center; justify-content: center; gap: 3px; }
 
@@ -787,25 +789,33 @@ input::-webkit-inner-spin-button { appearance: none; }
 .manual-pace small { margin: 0 0 0 1px; }
 
 .bottom-summary {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
   margin: 0 -20px -36px;
-  padding: 18px 20px calc(20px + env(safe-area-inset-bottom));
-  background: #0d2940;
+  background: #101010;
   color: #fff;
 }
 
-.bottom-summary > div { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.bottom-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  padding: 18px 20px;
+  background: #0d2940;
+}
+
+.bottom-stats > div { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .bottom-summary span { color: #8fa9bf; font-size: 9px; }
 .bottom-summary strong { margin-top: 4px; color: #f75f20; font-size: 16px; font-variant-numeric: tabular-nums; }
 .bottom-summary > .legal-links {
-  grid-column: 1 / -1;
+  display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 0;
+  padding: 14px 20px calc(16px + env(safe-area-inset-bottom));
+  background: #101010;
 }
 .legal-links a,
 .legal-links .legal-sep {
@@ -817,9 +827,13 @@ input::-webkit-inner-spin-button { appearance: none; }
 .legal-links a { text-decoration: none; }
 
 .app-shell:not(.dark) .plan-section,
-.app-shell:not(.dark) .bottom-summary {
+.app-shell:not(.dark) .bottom-stats {
   background: #4c94ff;
   color: #031e4d;
+}
+.app-shell:not(.dark) .bottom-summary,
+.app-shell:not(.dark) .legal-links {
+  background: #fff;
 }
 
 .app-shell:not(.dark) .plan-section .eyebrow,
@@ -847,9 +861,11 @@ input::-webkit-inner-spin-button { appearance: none; }
 }
 
 .app-shell:not(.dark) .finish-chip strong,
-.app-shell:not(.dark) .checkpoints li strong,
-.app-shell:not(.dark) .bottom-summary strong {
+.app-shell:not(.dark) .checkpoints li strong {
   color: #031e4d;
+}
+.app-shell:not(.dark) .bottom-summary strong {
+  color: #fff;
 }
 
 .app-shell:not(.dark) .plan-summary { background: rgba(255, 255, 255, 0.28); }
@@ -873,7 +889,8 @@ input::-webkit-inner-spin-button { appearance: none; }
   background: rgba(255, 255, 255, 0.35);
   color: #031e4d;
 }
-.app-shell:not(.dark) .plan-actions button:has(svg) {
+.app-shell:not(.dark) .plan-actions button:has(svg),
+.app-shell:not(.dark) .plan-actions button.wide {
   color: #fff;
 }
 .app-shell:not(.dark) .plan-actions button svg {
@@ -1036,7 +1053,7 @@ input::-webkit-inner-spin-button { appearance: none; }
 .save-form .field-error { color: #fdba74; }
 .save-form-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
-.saved-workouts { margin-top: 28px; }
+.saved-workouts { margin-top: 28px; margin-bottom: 16px; }
 .saved-workouts h3 {
   margin: 0 0 10px;
   color: #768a9c;
@@ -1127,6 +1144,8 @@ input::-webkit-inner-spin-button { appearance: none; }
   font-weight: 550;
   cursor: pointer;
 }
+.saved-run-actions button.saved-run-delete,
+.saved-run-edit button.saved-run-delete { color: #d1242f; }
 .saved-run-edit { display: flex; flex: 1; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 10px 12px 14px; }
 .saved-workout-list .saved-run-confirm { color: #16324f; font-size: 13px; font-weight: 750; }
 .saved-run-edit input {
@@ -1231,6 +1250,19 @@ input::-webkit-inner-spin-button { appearance: none; }
 .dark .warm-up-pace,
 .dark .warm-up-pace small { color: #f75f20; }
 .dark .plan-section { background: #141414; }
+.dark .splits-table .mile-cell > span,
+.dark .splits-table .pace-value,
+.dark .splits-table .elapsed-cell strong,
+.dark .splits-table .pace-input.compact input {
+  color: #f75f20;
+}
+.splits-table .pace-value small,
+.splits-table .elapsed-cell small,
+.splits-table .manual-pace small {
+  color: #fff;
+  font-weight: 700;
+}
+.dark .splits-table .mile-cell small { color: #fff; }
 .dark .saved-workouts h3,
 .dark .saved-workouts > p { color: #96afc3; }
 .dark .saved-workout-list { border-color: #333; background: #202020; }
@@ -1241,11 +1273,15 @@ input::-webkit-inner-spin-button { appearance: none; }
 .dark .saved-run-gear,
 .dark .saved-run-actions button,
 .dark .saved-run-edit button { color: #a8bccb; }
+.dark .saved-run-actions button.saved-run-delete,
+.dark .saved-run-edit button.saved-run-delete { color: #ff6b6b; }
 .dark .saved-run-meta { color: #fff; }
 .dark .saved-run-gear[aria-expanded="true"] { background: #2c2c2c; color: #e6e6e6; }
 .dark .saved-run-edit input { border-color: #333; background: #141414; color: #e6e6e6; }
 .dark .saved-workout-list .saved-run-confirm { color: #e6e6e6; }
-.dark .bottom-summary { background: #101010; }
+.dark .bottom-summary,
+.dark .bottom-stats,
+.dark .legal-links { background: #101010; }
 
 .app-shell :is(button, input, select, a):focus-visible {
   outline: 3px solid #f75f20;
@@ -1290,7 +1326,8 @@ input::-webkit-inner-spin-button { appearance: none; }
 
 @media (max-width: 370px) {
   .phone-frame { padding-right: 14px; padding-left: 14px; }
-  .plan-section, .bottom-summary { margin-right: -14px; margin-left: -14px; padding-right: 14px; padding-left: 14px; }
+  .plan-section, .bottom-summary { margin-right: -14px; margin-left: -14px; }
+  .plan-section, .bottom-stats, .legal-links { padding-right: 14px; padding-left: 14px; }
   .number-field input { width: 57px; font-size: 34px; }
   .strategy-card { padding: 10px; }
   .table-head, .table-row { grid-template-columns: repeat(4, minmax(0, 1fr)); }

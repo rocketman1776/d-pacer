@@ -109,7 +109,7 @@ export default function SavedWorkouts({
                 ) : confirming ? (
                   <div className="saved-run-edit">
                     <span className="saved-run-confirm">Delete this run?</span>
-                    <button disabled={busy} onClick={() => void update(deleteWorkout(workouts, workout.id))} type="button">
+                    <button className="saved-run-delete" disabled={busy} onClick={() => void update(deleteWorkout(workouts, workout.id))} type="button">
                       Delete
                     </button>
                     <button
@@ -180,6 +180,7 @@ export default function SavedWorkouts({
                           Rename
                         </button>
                         <button
+                          className="saved-run-delete"
                           onClick={() => {
                             setConfirmDeleteId(workout.id);
                             setEditingId("");

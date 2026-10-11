@@ -41,7 +41,7 @@ export default function PrivacyPage() {
 
           <h2>What we keep</h2>
           <p>
-            Signing in creates an account with your name, email address, and profile photo. If you sign in with Google, Google sends those details so we can open your account. Email sign-in keeps the name and email you enter.
+            Signing in creates an account with your name, email address, and profile photo. If you sign in with Google, Google sends those details so we can open your account. If you sign in with X, X sends your name and photo, and your email if you allow it. Email sign-in keeps the name and email you enter.
           </p>
           <p>
             That account is stored with Clerk, the sign-in service d-pacer uses. We use it to sign you in and to show the runs you save.

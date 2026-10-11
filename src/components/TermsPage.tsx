@@ -47,7 +47,7 @@ export default function TermsPage() {
 
           <h2>Your account</h2>
           <p>
-            You can sign in with Google or with email. You are responsible for the account you use. A saved run keeps the name you give it and the plan. You can save up to 12 runs, and you can delete a saved run from your list.
+            You can sign in with Google, X, or email. You are responsible for the account you use. A saved run keeps the name you give it and the plan. You can save up to 12 runs, and you can delete a saved run from your list.
           </p>
 
           <h2>Your plans</h2>

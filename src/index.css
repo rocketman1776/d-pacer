@@ -889,12 +889,18 @@ input::-webkit-inner-spin-button { appearance: none; }
 
 .saved-workout-list article {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 6px 12px 14px;
+  flex-direction: column;
+  align-items: stretch;
   border-top: 1px solid #eef3f7;
   color: #16324f;
 }
+.saved-run-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 6px 12px 14px;
+}
+.saved-workout-list article.menu-open .saved-run-main { padding-bottom: 2px; }
 
 .saved-workout-list article:first-child { border-top: 0; }
 .saved-workout-list article.active { background: #f4f8fb; box-shadow: inset 3px 0 0 #031e4d; }
@@ -941,7 +947,7 @@ input::-webkit-inner-spin-button { appearance: none; }
 }
 .saved-run-gear svg { width: 20px; height: 20px; }
 .saved-run-gear[aria-expanded="true"] { background: #eef3f7; color: #031e4d; }
-.saved-run-actions { display: flex; flex-shrink: 0; gap: 2px; }
+.saved-run-actions { display: flex; justify-content: flex-end; gap: 2px; padding: 0 8px 8px; }
 .saved-run-actions button,
 .saved-run-edit button {
   padding: 6px 8px;
@@ -952,7 +958,7 @@ input::-webkit-inner-spin-button { appearance: none; }
   font-weight: 550;
   cursor: pointer;
 }
-.saved-run-edit { display: flex; flex: 1; flex-wrap: wrap; align-items: center; gap: 8px; }
+.saved-run-edit { display: flex; flex: 1; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 10px 12px 14px; }
 .saved-workout-list .saved-run-confirm { color: #16324f; font-size: 13px; font-weight: 750; }
 .saved-run-edit input {
   flex: 1;

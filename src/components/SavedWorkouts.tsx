@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GearIcon } from "./icons";
 import { deleteWorkout, renameWorkout, savedRunPreview, type SavedWorkout } from "../lib/workouts";
 
@@ -19,6 +19,25 @@ export default function SavedWorkouts({
   const [menuId, setMenuId] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
+
+  useEffect(() => {
+    if (!menuId) return;
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      const open = document.querySelector(`[data-saved-run="${menuId}"]`);
+      if (target instanceof Node && open?.contains(target)) return;
+      setMenuId("");
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuId("");
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuId]);
 
   const update = async (next: SavedWorkout[]) => {
     setBusy(true);
@@ -47,7 +66,11 @@ export default function SavedWorkouts({
             const menuOpen = menuId === workout.id;
             const preview = savedRunPreview(workout.state);
             return (
-              <article className={workout.id === activeId ? "active" : ""} key={workout.id}>
+              <article
+                className={[workout.id === activeId ? "active" : "", menuOpen ? "menu-open" : ""].filter(Boolean).join(" ")}
+                data-saved-run={workout.id}
+                key={workout.id}
+              >
                 {editing ? (
                   <form
                     className="saved-run-edit"
@@ -100,22 +123,36 @@ export default function SavedWorkouts({
                   </div>
                 ) : (
                   <>
-                    <button
-                      className="saved-run-open"
-                      onClick={() => {
-                        setMenuId("");
-                        onOpen(workout);
-                      }}
-                      type="button"
-                    >
-                      <span className="saved-run-title">
-                        <strong>{workout.name}</strong>
-                        <span className="saved-run-strategy">· {preview.strategy}</span>
-                      </span>
-                      <span className="saved-run-meta">
-                        {preview.distance} · Avg pace {preview.averagePace} · Total {preview.totalTime}
-                      </span>
-                    </button>
+                    <div className="saved-run-main">
+                      <button
+                        className="saved-run-open"
+                        onClick={() => {
+                          setMenuId("");
+                          onOpen(workout);
+                        }}
+                        type="button"
+                      >
+                        <span className="saved-run-title">
+                          <strong>{workout.name}</strong>
+                          <span className="saved-run-strategy">· {preview.strategy}</span>
+                        </span>
+                        <span className="saved-run-meta">
+                          {preview.averagePace} · {preview.totalTime}
+                        </span>
+                      </button>
+                      <button
+                        aria-expanded={menuOpen}
+                        aria-label={`Options for ${workout.name}`}
+                        className="saved-run-gear"
+                        onClick={() => {
+                          setMenuId(menuOpen ? "" : workout.id);
+                          setNotice("");
+                        }}
+                        type="button"
+                      >
+                        <GearIcon />
+                      </button>
+                    </div>
                     {menuOpen && (
                       <div className="saved-run-actions">
                         <button
@@ -143,18 +180,6 @@ export default function SavedWorkouts({
                         </button>
                       </div>
                     )}
-                    <button
-                      aria-expanded={menuOpen}
-                      aria-label={`Options for ${workout.name}`}
-                      className="saved-run-gear"
-                      onClick={() => {
-                        setMenuId(menuOpen ? "" : workout.id);
-                        setNotice("");
-                      }}
-                      type="button"
-                    >
-                      <GearIcon />
-                    </button>
                   </>
                 )}
               </article>

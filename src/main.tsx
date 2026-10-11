@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import { ClerkProvider } from "@clerk/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -16,5 +17,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     ) : (
       app
     )}
+    <Analytics />
   </React.StrictMode>,
 );

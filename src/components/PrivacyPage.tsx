@@ -53,6 +53,11 @@ export default function PrivacyPage() {
             The plan you are working on is also kept in this browser, so it is still here when you come back. A shared plan link contains that plan, so anyone with the link can open it.
           </p>
 
+          <h2>Visits</h2>
+          <p>
+            We count visits to the site with Vercel. A visit includes the page, where the visit came from, the browser, and the country. It does not include your name, email, or saved runs.
+          </p>
+
           <h2>What we do not do</h2>
           <p>We do not sell your information. We do not use it for ads.</p>
 

@@ -873,6 +873,12 @@ input::-webkit-inner-spin-button { appearance: none; }
   background: rgba(255, 255, 255, 0.35);
   color: #031e4d;
 }
+.app-shell:not(.dark) .plan-actions button:has(svg) {
+  color: #fff;
+}
+.app-shell:not(.dark) .plan-actions button svg {
+  color: #031e4d;
+}
 .app-shell:not(.dark) .plan-actions button:hover,
 .app-shell:not(.dark) .manual-tools button:hover { background: rgba(255, 255, 255, 0.55); }
 .app-shell:not(.dark) .plan-empty { border-color: rgba(3, 30, 77, 0.22); }

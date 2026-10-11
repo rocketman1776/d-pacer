@@ -647,18 +647,31 @@ input::-webkit-inner-spin-button { appearance: none; }
 .plan-heading-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .plan-unit { flex: 0 0 auto; }
 
-.plan-section .plan-unit { background: rgba(255, 255, 255, 0.14); }
+.plan-section .plan-unit {
+  padding: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: transparent;
+}
 
-.plan-section .plan-unit button { color: #d5e3ee; }
+.plan-section .plan-unit button {
+  min-width: 28px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  color: #8eabbf;
+  font-size: 11px;
+  font-weight: 700;
+}
 
 .plan-section .plan-unit button.active {
-  background: #f75f20;
-  color: #031e4d;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
 }
 
 .finish-chip {
@@ -1045,11 +1058,14 @@ input::-webkit-inner-spin-button { appearance: none; }
   background: #f75f20;
   color: #031e4d;
 }
-.dark .plan-section .plan-unit { background: rgba(255, 255, 255, 0.14); }
-.dark .plan-section .plan-unit button { color: #d5e3ee; }
+.dark .plan-section .plan-unit {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: transparent;
+}
+.dark .plan-section .plan-unit button { color: #8eabbf; }
 .dark .plan-section .plan-unit button.active {
-  background: #f75f20;
-  color: #031e4d;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
 }
 .dark .choice-toggle { background: #141414; }
 .dark .choice-toggle button { color: #a0a0a0; }

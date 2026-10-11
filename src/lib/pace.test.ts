@@ -142,7 +142,7 @@ describe("elapsedAt and checkpoints", () => {
       "10K",
       "15K",
       "20K",
-      "Half marathon · halfway",
+      "Half Marathon - Halfway",
       "25K",
       "30K",
       "35K",

@@ -1,18 +1,5 @@
 import { useState } from "react";
-import { RACES, STRATEGIES, UNIT_LABELS, formatDistance } from "../lib/pace";
-import { deleteWorkout, renameWorkout, type SavedWorkout } from "../lib/workouts";
-
-function workoutDetail(workout: SavedWorkout) {
-  const { state } = workout;
-  const distance =
-    state.race === "none"
-      ? "No distance"
-      : state.race === "custom"
-        ? `${formatDistance(state.customDistance)} ${UNIT_LABELS[state.customUnit].short}`
-        : RACES.find((race) => race.id === state.race)!.name;
-  const strategy = state.planMode === "manual" ? "Custom" : STRATEGIES.find((item) => item.id === state.strategy)!.name;
-  return `${distance} · ${strategy}`;
-}
+import { deleteWorkout, renameWorkout, savedRunPreview, type SavedWorkout } from "../lib/workouts";
 
 export default function SavedWorkouts({
   workouts,
@@ -55,6 +42,7 @@ export default function SavedWorkouts({
           {workouts.map((workout) => {
             const editing = editingId === workout.id;
             const confirming = confirmDeleteId === workout.id;
+            const preview = savedRunPreview(workout.state);
             return (
               <article className={workout.id === activeId ? "active" : ""} key={workout.id}>
                 {editing ? (
@@ -111,7 +99,12 @@ export default function SavedWorkouts({
                   <>
                     <button className="saved-run-open" onClick={() => onOpen(workout)} type="button">
                       <strong>{workout.name}</strong>
-                      <span>{workoutDetail(workout)}</span>
+                      <span>
+                        {preview.distance} · {preview.strategy}
+                      </span>
+                      <span>
+                        Avg pace {preview.averagePace} · Total {preview.totalTime}
+                      </span>
                     </button>
                     <div className="saved-run-actions">
                       <button

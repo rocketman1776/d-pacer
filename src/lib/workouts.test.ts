@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { DEFAULT_STATE } from "./planState";
-import { deleteWorkout, readWorkouts, renameWorkout, withWorkouts } from "./workouts";
+import { deleteWorkout, readWorkouts, renameWorkout, savedRunPreview, withWorkouts } from "./workouts";
 
 describe("readWorkouts", () => {
   it("keeps named workouts and drops garbage", () => {
@@ -32,5 +32,13 @@ describe("readWorkouts", () => {
     expect(renameWorkout(workouts, "a", "  Park loop  ")[0]?.name).toBe("Park loop");
     expect(deleteWorkout(workouts, "a").map((workout) => workout.id)).toEqual(["b"]);
     expect(renameWorkout(workouts, "a", "   ")).toEqual(workouts);
+  });
+
+  it("includes average pace and total time for a saved run", () => {
+    const preview = savedRunPreview({ ...DEFAULT_STATE, race: "5k", finishSeconds: 30 * 60, strategy: "even" });
+    expect(preview.distance).toBe("5K");
+    expect(preview.strategy).toBe("Even pace");
+    expect(preview.averagePace).toBe("9:39 /mi");
+    expect(preview.totalTime).toBe("0:30:00");
   });
 });

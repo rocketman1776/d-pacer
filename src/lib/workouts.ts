@@ -1,4 +1,15 @@
-import { sanitizeState, type PlanState } from "./planState";
+import {
+  RACES,
+  STRATEGIES,
+  UNIT_LABELS,
+  formatDistance,
+  formatTime,
+  generatePlan,
+  manualPlan,
+  segmentDistances,
+  toUnits,
+} from "./pace";
+import { raceMeters, sanitizeState, type PlanState } from "./planState";
 
 export interface SavedWorkout {
   id: string;
@@ -29,6 +40,40 @@ export function readWorkouts(metadata: Record<string, unknown> | null | undefine
     if (workouts.length === MAX_SAVED_WORKOUTS) break;
   }
   return workouts;
+}
+
+export function savedRunPreview(state: PlanState) {
+  const distance =
+    state.race === "none"
+      ? "No distance"
+      : state.race === "custom"
+        ? `${formatDistance(state.customDistance)} ${UNIT_LABELS[state.customUnit].short}`
+        : RACES.find((race) => race.id === state.race)!.name;
+  const strategy = state.planMode === "manual" ? "Custom" : STRATEGIES.find((item) => item.id === state.strategy)!.name;
+  const totalUnits = toUnits(raceMeters(state), state.unit);
+  const goalSeconds = state.goalType === "finish" ? state.finishSeconds : state.targetPace * totalUnits;
+  const fallbackPace = totalUnits > 0 && goalSeconds > 0 ? goalSeconds / totalUnits : state.targetPace;
+  const rows = segmentDistances(totalUnits).length;
+  const manualPaces = Array.from({ length: rows }, (_, index) => state.manualPaces[index] ?? fallbackPace);
+  const plan =
+    state.planMode === "manual"
+      ? manualPlan(totalUnits, manualPaces)
+      : generatePlan({
+          totalUnits,
+          goalSeconds,
+          strategy: state.strategy,
+          strength: state.strength,
+          holdUnits: state.holdUnits,
+          warmUpSeconds: state.warmUpEnabled ? state.warmUpSeconds : undefined,
+        });
+  const finalTime = plan.at(-1)?.elapsed ?? 0;
+  const average = totalUnits > 0 ? finalTime / totalUnits : 0;
+  return {
+    distance,
+    strategy,
+    averagePace: plan.length ? `${formatTime(average)} /${UNIT_LABELS[state.unit].short}` : "–",
+    totalTime: plan.length ? formatTime(finalTime, true) : "–",
+  };
 }
 
 export function renameWorkout(workouts: SavedWorkout[], id: string, name: string): SavedWorkout[] {

@@ -933,9 +933,10 @@ input::-webkit-inner-spin-button { appearance: none; }
 
 .goal-summary.warning span { color: #7a2e0e; font-size: 11px; font-weight: 700; }
 
-.finish-chip small.delta { margin-top: 3px; font-size: 10px; font-weight: 750; }
+.finish-chip small.delta { margin-top: 3px; font-size: 12px; font-weight: 900; }
 .delta.ahead { color: #4ade80 !important; }
-.delta.behind { color: #fca5a5 !important; }
+.delta.behind { color: #ff4d4d !important; }
+.splits-table .elapsed-cell small.delta { font-size: 10px; font-weight: 900; }
 
 .plan-empty {
   margin: 18px 0 0;

@@ -174,6 +174,7 @@ const CHECKPOINT_CANDIDATES = [
   { label: "5K", meters: 5000 },
   { label: "10K", meters: 10000 },
   { label: "15K", meters: 15000 },
+  { label: "20K", meters: 20000 },
   { label: "Half marathon", meters: 21097.5 },
   { label: "30K", meters: 30000 },
 ];

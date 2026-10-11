@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { copyFileSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig, type Plugin } from "vite";
@@ -34,9 +34,21 @@ function betaCspMeta(): Plugin {
   };
 }
 
+/** Vercel serves this file at /privacy, including under the /beta build. */
+function privacyPageFile(): Plugin {
+  return {
+    name: "privacy-page-file",
+    apply: "build",
+    writeBundle(options) {
+      if (!options.dir) return;
+      copyFileSync(path.join(options.dir, "index.html"), path.join(options.dir, "privacy.html"));
+    },
+  };
+}
+
 export default defineConfig({
   base: process.env.BASE_PATH || "/",
-  plugins: [betaCspMeta(), react(), tailwindcss()],
+  plugins: [betaCspMeta(), privacyPageFile(), react(), tailwindcss()],
   resolve: {
     alias: {
       "@": path.resolve(projectRoot, "src"),

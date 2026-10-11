@@ -239,7 +239,7 @@ function Planner({
   const editWorkout = (workout: SavedWorkout) => {
     openWorkout(workout);
     setShareStatus(`Editing ${workout.name}. Save run updates this one.`);
-    document.getElementById("plan-heading")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("race-distance")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const sharePlan = async () => {

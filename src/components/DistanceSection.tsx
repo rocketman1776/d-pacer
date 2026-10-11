@@ -13,7 +13,7 @@ export default function DistanceSection({
   const isCustom = state.race === "custom";
 
   return (
-    <section aria-labelledby="distance-heading" className="flow-section">
+    <section aria-labelledby="distance-heading" className="flow-section" id="race-distance">
       <SectionTitle eyebrow="Race distance" id="distance-heading" step={1} title="How far are you running?" />
       <div className="distance-grid">
         {isCustom ? (

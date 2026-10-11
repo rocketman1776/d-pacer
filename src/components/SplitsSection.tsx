@@ -18,6 +18,8 @@ export default function SplitsSection({
   onShare,
   onPrint,
   onSave,
+  onSaveAsNew,
+  saveBusy = false,
   saving,
   warmUp = false,
   emptyHint = "Set a goal above and your splits will appear here.",
@@ -37,6 +39,8 @@ export default function SplitsSection({
   onShare: () => void;
   onPrint: () => void;
   onSave?: () => void;
+  onSaveAsNew?: () => void;
+  saveBusy?: boolean;
   saving?: {
     name: string;
     error: string;
@@ -195,9 +199,16 @@ export default function SplitsSection({
               Print pace band
             </button>
             {onSave && !saving && (
-              <button className="wide" onClick={onSave} type="button">
-                Save run
-              </button>
+              <>
+                <button className="wide" disabled={saveBusy} onClick={onSave} type="button">
+                  {saveBusy ? "Saving" : "Save run"}
+                </button>
+                {onSaveAsNew && (
+                  <button className="wide" disabled={saveBusy} onClick={onSaveAsNew} type="button">
+                    Save as new
+                  </button>
+                )}
+              </>
             )}
             {saving && (
               <form

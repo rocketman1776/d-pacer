@@ -76,6 +76,11 @@ export function savedRunPreview(state: PlanState) {
   };
 }
 
+export function replaceWorkout(workouts: SavedWorkout[], id: string, state: PlanState): SavedWorkout[] {
+  if (!workouts.some((workout) => workout.id === id)) return workouts;
+  return workouts.map((workout) => (workout.id === id ? { ...workout, state, savedAt: Date.now() } : workout));
+}
+
 export function renameWorkout(workouts: SavedWorkout[], id: string, name: string): SavedWorkout[] {
   const trimmed = name.trim().slice(0, 80);
   if (!trimmed) return workouts;

@@ -38,7 +38,7 @@ import {
   type PlanState,
 } from "./lib/planState";
 import { isBeta } from "./lib/channel";
-import { MAX_SAVED_WORKOUTS, readWorkouts, withWorkouts, type SavedWorkout } from "./lib/workouts";
+import { MAX_SAVED_WORKOUTS, readWorkouts, replaceWorkout, withWorkouts, type SavedWorkout } from "./lib/workouts";
 import useTheme from "./lib/useTheme";
 
 const clerkEnabled = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY);
@@ -162,6 +162,8 @@ function Planner({
 
   const warmUpActive = state.warmUpEnabled && !isManual && maxWarmUpSeconds(totalUnits, goalSeconds) > 0;
 
+  const activeWorkout = workouts.find((workout) => workout.id === activeWorkoutId);
+
   const openSave = () => {
     if (!plan.length) {
       setShareStatus("Choose a race distance before saving.");
@@ -170,6 +172,39 @@ function Planner({
     setSaveError("");
     setSaveName(raceName || "Run");
     setSaveOpen(true);
+  };
+
+  const openSaveAsNew = () => {
+    if (!plan.length) {
+      setShareStatus("Choose a race distance before saving.");
+      return;
+    }
+    setSaveError("");
+    setSaveName(activeWorkout?.name || raceName || "Run");
+    setSaveOpen(true);
+  };
+
+  const confirmUpdate = async () => {
+    if (!plan.length) {
+      setShareStatus("Choose a race distance before saving.");
+      return;
+    }
+    if (!onPersist || !activeWorkout) {
+      openSave();
+      return;
+    }
+    const next = replaceWorkout(workouts, activeWorkout.id, state);
+    setSaveBusy(true);
+    setShareStatus("");
+    try {
+      await onPersist(next);
+      setWorkouts(next);
+      setShareStatus("Run updated.");
+    } catch {
+      setShareStatus("Could not update this run. Try again.");
+    } finally {
+      setSaveBusy(false);
+    }
   };
 
   const confirmSave = async () => {
@@ -199,6 +234,12 @@ function Planner({
     setSaveOpen(false);
     setShareStatus("");
     setState(workout.state);
+  };
+
+  const editWorkout = (workout: SavedWorkout) => {
+    openWorkout(workout);
+    setShareStatus(`Editing ${workout.name}. Save run updates this one.`);
+    document.getElementById("plan-heading")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const sharePlan = async () => {
@@ -323,7 +364,9 @@ function Planner({
           onPaceChange={setManualPace}
           onPrint={() => window.print()}
           onResetPaces={() => update({ manualPaces: [] })}
-          onSave={signedIn ? openSave : undefined}
+          onSave={signedIn ? (activeWorkout ? () => void confirmUpdate() : openSave) : undefined}
+          onSaveAsNew={signedIn && activeWorkout ? openSaveAsNew : undefined}
+          saveBusy={saveBusy}
           onShare={sharePlan}
           plan={plan}
           saving={
@@ -353,6 +396,7 @@ function Planner({
         {signedIn && (
           <SavedWorkouts
             activeId={activeWorkoutId}
+            onEdit={editWorkout}
             onOpen={openWorkout}
             onUpdate={async (next) => {
               if (!onPersist) return;

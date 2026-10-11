@@ -6,11 +6,13 @@ export default function SavedWorkouts({
   workouts,
   activeId,
   onOpen,
+  onEdit,
   onUpdate,
 }: {
   workouts: SavedWorkout[];
   activeId: string;
   onOpen: (workout: SavedWorkout) => void;
+  onEdit: (workout: SavedWorkout) => void;
   onUpdate: (workouts: SavedWorkout[]) => Promise<void>;
 }) {
   const [editingId, setEditingId] = useState("");
@@ -155,6 +157,16 @@ export default function SavedWorkouts({
                     </div>
                     {menuOpen && (
                       <div className="saved-run-actions">
+                        <button
+                          onClick={() => {
+                            setMenuId("");
+                            setNotice("");
+                            onEdit(workout);
+                          }}
+                          type="button"
+                        >
+                          Edit
+                        </button>
                         <button
                           onClick={() => {
                             setDraft(workout.name);

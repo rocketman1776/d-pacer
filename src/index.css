@@ -774,6 +774,35 @@ input::-webkit-inner-spin-button { appearance: none; }
 .bottom-summary > div { display: flex; flex-direction: column; }
 .bottom-summary span { color: #8fa9bf; font-size: 9px; }
 .bottom-summary strong { margin-top: 4px; color: #f75f20; font-size: 16px; font-variant-numeric: tabular-nums; }
+.privacy-link {
+  grid-column: 1 / -1;
+  margin-top: 12px;
+  color: #8fa9bf;
+  font-size: 12px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.privacy-page h1 {
+  margin: 28px 0 8px;
+  font-size: 32px;
+  letter-spacing: -0.04em;
+}
+.privacy-page h2 {
+  margin: 22px 0 8px;
+  font-size: 16px;
+}
+.privacy-page p {
+  margin: 0 0 12px;
+  color: #16324f;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.privacy-page .updated { color: #5c7388; font-size: 13px; }
+.privacy-page a { color: #031e4d; font-weight: 650; }
+.dark .privacy-page p { color: #e6e6e6; }
+.dark .privacy-page .updated { color: #a8bccb; }
+.dark .privacy-page a { color: #fff; }
 
 .field-error { color: #c2410c; font-size: 10px; font-weight: 650; }
 .custom-distance input[aria-invalid="true"] { border-color: #ea580c; }

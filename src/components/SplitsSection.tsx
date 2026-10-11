@@ -17,6 +17,8 @@ export default function SplitsSection({
   onResetPaces,
   onShare,
   onPrint,
+  onSave,
+  saving,
   warmUp = false,
   emptyHint = "Set a goal above and your splits will appear here.",
 }: {
@@ -34,6 +36,15 @@ export default function SplitsSection({
   onResetPaces: () => void;
   onShare: () => void;
   onPrint: () => void;
+  onSave?: () => void;
+  saving?: {
+    name: string;
+    error: string;
+    busy: boolean;
+    onName: (name: string) => void;
+    onConfirm: () => void;
+    onCancel: () => void;
+  };
   warmUp?: boolean;
   emptyHint?: string;
 }) {
@@ -183,6 +194,39 @@ export default function SplitsSection({
               <PrintIcon />
               Print pace band
             </button>
+            {onSave && !saving && (
+              <button className="wide" onClick={onSave} type="button">
+                Save workout
+              </button>
+            )}
+            {saving && (
+              <form
+                className="save-form"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  saving.onConfirm();
+                }}
+              >
+                <label>
+                  Name
+                  <input
+                    aria-label="Workout name"
+                    maxLength={80}
+                    onChange={(event) => saving.onName(event.target.value)}
+                    value={saving.name}
+                  />
+                </label>
+                {saving.error && <p className="field-error">{saving.error}</p>}
+                <div className="save-form-actions">
+                  <button disabled={saving.busy} type="submit">
+                    {saving.busy ? "Saving" : "Save"}
+                  </button>
+                  <button onClick={saving.onCancel} type="button">
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
           <p aria-live="polite" className="share-status">
             {shareStatus}

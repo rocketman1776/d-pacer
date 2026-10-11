@@ -840,6 +840,56 @@ input::-webkit-inner-spin-button { appearance: none; }
   overflow-wrap: anywhere;
 }
 
+.save-form {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 8px;
+}
+
+.save-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #a5bbcd;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.save-form input {
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 14px;
+}
+
+.save-form .field-error { color: #fdba74; }
+.save-form-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.saved-workouts { margin-top: 22px; }
+.saved-workouts h3 { margin: 0 0 8px; font-size: 14px; }
+.saved-workouts > p { margin: 0; color: #768a9c; font-size: 12px; }
+
+.saved-workout-list { display: flex; flex-direction: column; gap: 8px; }
+
+.saved-workout-list button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 12px 14px;
+  border: 1px solid #d7e1ea;
+  border-radius: 14px;
+  background: #fff;
+  color: #16324f;
+  text-align: left;
+}
+
+.saved-workout-list button.active { border-color: #031e4d; background: #e9eff5; }
+.saved-workout-list strong { font-size: 14px; }
+.saved-workout-list span { color: #6a7f92; font-size: 11px; font-weight: 650; }
+
 .pace-band { display: none; }
 
 .dark {
@@ -921,6 +971,10 @@ input::-webkit-inner-spin-button { appearance: none; }
 .dark .warm-up-pace,
 .dark .warm-up-pace small { color: #f75f20; }
 .dark .plan-section { background: #141414; }
+.dark .saved-workouts > p { color: #96afc3; }
+.dark .saved-workout-list button { border-color: #333; background: #242424; color: #e6e6e6; }
+.dark .saved-workout-list button.active { border-color: #f75f20; background: #2a211c; }
+.dark .saved-workout-list span { color: #ead2b4; }
 .dark .bottom-summary { background: #101010; }
 
 .app-shell :is(button, input, select, a):focus-visible {

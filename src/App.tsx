@@ -1,4 +1,4 @@
-import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/react";
+import { Show, SignInButton, SignUpButton, UserButton, useUser } from "@clerk/react";
 import { useEffect, useMemo, useState } from "react";
 import dpacerLogo from "./assets/dpacer-logo.webp";
 import dpacerLogoDark from "./assets/dpacer-logo-dark.webp";
@@ -7,6 +7,7 @@ import GoalSection from "./components/GoalSection";
 import { MoonIcon, SunIcon } from "./components/icons";
 import PaceBand from "./components/PaceBand";
 import SectionTitle from "./components/SectionTitle";
+import SavedWorkouts from "./components/SavedWorkouts";
 import SplitsSection from "./components/SplitsSection";
 import StrategySection from "./components/StrategySection";
 import {
@@ -37,6 +38,7 @@ import {
   type PlanState,
 } from "./lib/planState";
 import { isBeta } from "./lib/channel";
+import { MAX_SAVED_WORKOUTS, readWorkouts, withWorkouts, type SavedWorkout } from "./lib/workouts";
 import useTheme from "./lib/useTheme";
 
 const clerkEnabled = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY);
@@ -50,10 +52,30 @@ function initialState(): { state: PlanState; fromLink: boolean } {
   return { state: loadStoredState() ?? DEFAULT_STATE, fromLink: false };
 }
 
-export default function App() {
+function Planner({
+  signedIn = false,
+  savedWorkouts = [],
+  onPersist,
+}: {
+  signedIn?: boolean;
+  savedWorkouts?: SavedWorkout[];
+  onPersist?: (workouts: SavedWorkout[]) => Promise<void>;
+}) {
   const [{ state: initial, fromLink }] = useState(initialState);
   const [state, setState] = useState(initial);
   const [shareStatus, setShareStatus] = useState("");
+  const [saveOpen, setSaveOpen] = useState(false);
+  const [saveName, setSaveName] = useState("");
+  const [saveError, setSaveError] = useState("");
+  const [saveBusy, setSaveBusy] = useState(false);
+  const [activeWorkoutId, setActiveWorkoutId] = useState("");
+  const serverKey = savedWorkouts.map((workout) => `${workout.id}:${workout.savedAt}`).join("|");
+  const [workouts, setWorkouts] = useState(savedWorkouts);
+  const [seenServerKey, setSeenServerKey] = useState(serverKey);
+  if (serverKey !== seenServerKey) {
+    setSeenServerKey(serverKey);
+    setWorkouts(savedWorkouts);
+  }
   const { isDark, toggle: toggleTheme } = useTheme();
 
   useEffect(() => storeState(state), [state]);
@@ -136,6 +158,45 @@ export default function App() {
     });
 
   const warmUpActive = state.warmUpEnabled && !isManual && maxWarmUpSeconds(totalUnits, goalSeconds) > 0;
+
+  const openSave = () => {
+    if (!plan.length) {
+      setShareStatus("Choose a race distance before saving.");
+      return;
+    }
+    setSaveError("");
+    setSaveName(raceName || "Workout");
+    setSaveOpen(true);
+  };
+
+  const confirmSave = async () => {
+    const name = saveName.trim();
+    if (!name) {
+      setSaveError("Add a name for this workout.");
+      return;
+    }
+    if (!onPersist) return;
+    const next = [{ id: crypto.randomUUID(), name, savedAt: Date.now(), state }, ...workouts].slice(0, MAX_SAVED_WORKOUTS);
+    setSaveBusy(true);
+    try {
+      await onPersist(next);
+      setWorkouts(next);
+      setActiveWorkoutId(next[0]?.id ?? "");
+      setSaveOpen(false);
+      setShareStatus("Workout saved to your account.");
+    } catch {
+      setSaveError("Could not save this workout. Try again.");
+    } finally {
+      setSaveBusy(false);
+    }
+  };
+
+  const openWorkout = (workout: SavedWorkout) => {
+    setActiveWorkoutId(workout.id);
+    setSaveOpen(false);
+    setShareStatus("");
+    setState(workout.state);
+  };
 
   const sharePlan = async () => {
     const url = `${window.location.origin}${window.location.pathname}?${encodeState(state)}`;
@@ -259,14 +320,34 @@ export default function App() {
           onPaceChange={setManualPace}
           onPrint={() => window.print()}
           onResetPaces={() => update({ manualPaces: [] })}
+          onSave={signedIn ? openSave : undefined}
           onShare={sharePlan}
           plan={plan}
+          saving={
+            saveOpen
+              ? {
+                  busy: saveBusy,
+                  error: saveError,
+                  name: saveName,
+                  onCancel: () => {
+                    setSaveOpen(false);
+                    setSaveError("");
+                  },
+                  onConfirm: () => {
+                    void confirmSave();
+                  },
+                  onName: setSaveName,
+                }
+              : undefined
+          }
           warmUp={warmUpActive}
           raceName={raceName}
           shareStatus={shareStatus}
           strategyName={strategyName}
           unit={unit}
         />
+
+        {signedIn && <SavedWorkouts activeId={activeWorkoutId} onOpen={openWorkout} workouts={workouts} />}
 
         <div className="bottom-summary">
           <div>
@@ -283,4 +364,32 @@ export default function App() {
       <PaceBand finalTime={finalTime} plan={plan} raceName={raceName} strategyName={strategyName} unit={unit} />
     </main>
   );
+}
+
+function ClerkPlanner() {
+  const { isLoaded, isSignedIn, user } = useUser();
+  const savedWorkouts = useMemo(
+    () => readWorkouts(user?.unsafeMetadata as Record<string, unknown> | undefined),
+    [user],
+  );
+
+  const persist = async (workouts: SavedWorkout[]) => {
+    if (!user) return;
+    await user.update({
+      unsafeMetadata: withWorkouts(user.unsafeMetadata as Record<string, unknown>, workouts),
+    });
+  };
+
+  return (
+    <Planner
+      onPersist={isSignedIn ? persist : undefined}
+      savedWorkouts={savedWorkouts}
+      signedIn={Boolean(isLoaded && isSignedIn)}
+    />
+  );
+}
+
+export default function App() {
+  if (!clerkEnabled) return <Planner />;
+  return <ClerkPlanner />;
 }

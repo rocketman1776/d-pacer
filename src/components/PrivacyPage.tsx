@@ -41,25 +41,22 @@ export default function PrivacyPage() {
 
           <h2>What we keep</h2>
           <p>
-            Signing in creates an account with your name, email address, and profile photo. If you sign in with Google, Google sends those details so we can open your account. If you sign in with X, X sends your name and photo, and your email if you allow it. Email sign-in keeps the name and email you enter.
+            Signing in creates an account with your name, email, and profile photo. Google sends those if you use Google. X sends your name and photo, and your email if you allow it. With email sign-in, we keep what you enter.
           </p>
           <p>
-            That account is stored with Clerk, the sign-in service d-pacer uses. We use it to sign you in and to show the runs you save.
+            Clerk stores that account so we can sign you in and show the runs you save. A saved run is the name you give it and the plan: distance, pace, finish time, and strategy.
           </p>
           <p>
-            A saved run keeps the name you give it and the plan: distance, pace, finish time, and strategy. You can save up to 12 runs. You can delete a saved run from your list.
-          </p>
-          <p>
-            The plan you are working on is also kept in this browser, so it is still here when you come back. A shared plan link contains that plan, so anyone with the link can open it.
+            The plan you are working on stays in this browser, so it is still here when you come back. If you share a link, anyone with that link can open the plan.
           </p>
 
           <h2>Visits</h2>
           <p>
-            We count visits to the site with Vercel. A visit includes the page, where the visit came from, the browser, and the country. It does not include your name, email, or saved runs.
+            We count visits with Vercel. A visit includes the page, where it came from, the browser, and the country. It does not include your name, email, or saved runs.
           </p>
 
           <h2>What we do not do</h2>
-          <p>We do not sell your information. We do not use it for ads.</p>
+          <p>We do not sell your information or use it for ads.</p>
 
           <p>
             Questions about this page can go to <a href="mailto:support@dpacer.app">support@dpacer.app</a>.

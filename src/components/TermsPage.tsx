@@ -47,16 +47,15 @@ export default function TermsPage() {
 
           <h2>Your account</h2>
           <p>
-            You can sign in with Google, X, or email. You are responsible for the account you use. A saved run keeps the name you give it and the plan. You can save up to 12 runs, and you can delete a saved run from your list.
+            You can sign in with Google, X, or email. You are responsible for the account you use.
           </p>
+          <p>You can save up to 12 runs. You can delete a saved run from your list.</p>
 
           <h2>Your plans</h2>
           <p>
-            A plan is an estimate from the distance, pace, and strategy you enter. It is not coaching, medical advice, or a promise of a finish time. You decide how you run.
+            A plan is an estimate from the distance, pace, and strategy you enter. It is not coaching, medical advice, or a promised finish time. You decide how you run.
           </p>
-
-          <h2>Sharing</h2>
-          <p>A shared plan link contains that plan. Anyone with the link can open it.</p>
+          <p>A shared link is open to anyone who has it.</p>
 
           <h2>What you should not do</h2>
           <p>Do not misuse the site, try to break it, or use it to harm someone else.</p>

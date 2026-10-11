@@ -196,7 +196,7 @@ export default function SplitsSection({
             </button>
             {onSave && !saving && (
               <button className="wide" onClick={onSave} type="button">
-                Save workout
+                Save run
               </button>
             )}
             {saving && (
@@ -210,7 +210,7 @@ export default function SplitsSection({
                 <label>
                   Name
                   <input
-                    aria-label="Workout name"
+                    aria-label="Run name"
                     maxLength={80}
                     onChange={(event) => saving.onName(event.target.value)}
                     value={saving.name}

@@ -873,22 +873,56 @@ input::-webkit-inner-spin-button { appearance: none; }
 
 .saved-workout-list { display: flex; flex-direction: column; gap: 8px; }
 
-.saved-workout-list button {
+.saved-workout-list article {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  padding: 12px 14px;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 10px 10px 14px;
   border: 1px solid #d7e1ea;
   border-radius: 14px;
   background: #fff;
   color: #16324f;
-  text-align: left;
 }
 
-.saved-workout-list button.active { border-color: #031e4d; background: #e9eff5; }
+.saved-workout-list article.active { border-color: #031e4d; background: #e9eff5; }
+.saved-run-open {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+  padding: 2px 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
 .saved-workout-list strong { font-size: 14px; }
 .saved-workout-list span { color: #6a7f92; font-size: 11px; font-weight: 650; }
+.saved-run-actions { display: flex; flex-shrink: 0; gap: 4px; }
+.saved-run-actions button,
+.saved-run-edit button {
+  padding: 6px 8px;
+  border: 0;
+  background: transparent;
+  color: #031e4d;
+  font-size: 11px;
+  font-weight: 750;
+}
+.saved-run-edit { display: flex; flex: 1; flex-wrap: wrap; align-items: center; gap: 8px; }
+.saved-workout-list .saved-run-confirm { color: #16324f; font-size: 13px; font-weight: 750; }
+.saved-run-edit input {
+  flex: 1;
+  min-width: 8rem;
+  padding: 8px 10px;
+  border: 1px solid #d7e1ea;
+  border-radius: 10px;
+  background: #fff;
+  color: #16324f;
+  font-size: 14px;
+}
+.saved-workouts .field-error { margin: 8px 0 0; }
 
 .pace-band { display: none; }
 
@@ -972,9 +1006,13 @@ input::-webkit-inner-spin-button { appearance: none; }
 .dark .warm-up-pace small { color: #f75f20; }
 .dark .plan-section { background: #141414; }
 .dark .saved-workouts > p { color: #96afc3; }
-.dark .saved-workout-list button { border-color: #333; background: #242424; color: #e6e6e6; }
-.dark .saved-workout-list button.active { border-color: #f75f20; background: #2a211c; }
-.dark .saved-workout-list span { color: #ead2b4; }
+.dark .saved-workout-list article { border-color: #333; background: #242424; color: #e6e6e6; }
+.dark .saved-workout-list article.active { border-color: #f75f20; background: #2a211c; }
+.dark .saved-workout-list span,
+.dark .saved-run-actions button,
+.dark .saved-run-edit button { color: #ead2b4; }
+.dark .saved-run-edit input { border-color: #333; background: #141414; color: #e6e6e6; }
+.dark .saved-workout-list .saved-run-confirm { color: #e6e6e6; }
 .dark .bottom-summary { background: #101010; }
 
 .app-shell :is(button, input, select, a):focus-visible {

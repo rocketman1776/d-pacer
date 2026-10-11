@@ -69,7 +69,7 @@ function Planner({
   const [saveError, setSaveError] = useState("");
   const [saveBusy, setSaveBusy] = useState(false);
   const [activeWorkoutId, setActiveWorkoutId] = useState("");
-  const serverKey = savedWorkouts.map((workout) => `${workout.id}:${workout.savedAt}`).join("|");
+  const serverKey = savedWorkouts.map((workout) => `${workout.id}:${workout.savedAt}:${workout.name}`).join("|");
   const [workouts, setWorkouts] = useState(savedWorkouts);
   const [seenServerKey, setSeenServerKey] = useState(serverKey);
   if (serverKey !== seenServerKey) {
@@ -165,14 +165,14 @@ function Planner({
       return;
     }
     setSaveError("");
-    setSaveName(raceName || "Workout");
+    setSaveName(raceName || "Run");
     setSaveOpen(true);
   };
 
   const confirmSave = async () => {
     const name = saveName.trim();
     if (!name) {
-      setSaveError("Add a name for this workout.");
+      setSaveError("Add a name for this run.");
       return;
     }
     if (!onPersist) return;
@@ -183,9 +183,9 @@ function Planner({
       setWorkouts(next);
       setActiveWorkoutId(next[0]?.id ?? "");
       setSaveOpen(false);
-      setShareStatus("Workout saved to your account.");
+      setShareStatus("Run saved to your account.");
     } catch {
-      setSaveError("Could not save this workout. Try again.");
+      setSaveError("Could not save this run. Try again.");
     } finally {
       setSaveBusy(false);
     }
@@ -347,7 +347,19 @@ function Planner({
           unit={unit}
         />
 
-        {signedIn && <SavedWorkouts activeId={activeWorkoutId} onOpen={openWorkout} workouts={workouts} />}
+        {signedIn && (
+          <SavedWorkouts
+            activeId={activeWorkoutId}
+            onOpen={openWorkout}
+            onUpdate={async (next) => {
+              if (!onPersist) return;
+              await onPersist(next);
+              setWorkouts(next);
+              setActiveWorkoutId((current) => (next.some((workout) => workout.id === current) ? current : ""));
+            }}
+            workouts={workouts}
+          />
+        )}
 
         <div className="bottom-summary">
           <div>

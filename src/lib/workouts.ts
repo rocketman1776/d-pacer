@@ -31,6 +31,16 @@ export function readWorkouts(metadata: Record<string, unknown> | null | undefine
   return workouts;
 }
 
+export function renameWorkout(workouts: SavedWorkout[], id: string, name: string): SavedWorkout[] {
+  const trimmed = name.trim().slice(0, 80);
+  if (!trimmed) return workouts;
+  return workouts.map((workout) => (workout.id === id ? { ...workout, name: trimmed } : workout));
+}
+
+export function deleteWorkout(workouts: SavedWorkout[], id: string): SavedWorkout[] {
+  return workouts.filter((workout) => workout.id !== id);
+}
+
 export function withWorkouts(
   metadata: Record<string, unknown> | null | undefined,
   workouts: SavedWorkout[],

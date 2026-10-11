@@ -146,6 +146,12 @@ button { -webkit-tap-highlight-color: transparent; }
   color: #fff;
 }
 
+.app-shell:not(.dark) .auth-button-primary {
+  border-color: #4c94ff;
+  background: #4c94ff;
+  color: #fff;
+}
+
 .beta-banner {
   margin: 0;
   padding: 3px 10px;
@@ -235,15 +241,15 @@ h2 { font-size: 19px; font-weight: 750; }
 .distance-card:active, .strategy-card:active { transform: scale(.98); }
 
 .distance-card.active {
-  border-color: #031e4d;
-  background: #031e4d;
+  border-color: #4c94ff;
+  background: #4c94ff;
   color: #fff;
-  box-shadow: 0 9px 20px rgba(23, 79, 126, .14);
+  box-shadow: 0 9px 20px rgba(76, 148, 255, 0.28);
 }
 
 .distance-card strong { font-size: 14px; }
 .distance-card span { margin-top: 3px; color: #8496a7; font-size: 10px; }
-.distance-card.active span { color: #d7e4ef; }
+.distance-card.active span { color: rgba(255, 255, 255, 0.85); }
 
 .custom-card {
   grid-column: 1 / -1;
@@ -333,6 +339,17 @@ h2 { font-size: 19px; font-weight: 750; }
   color: #031e4d;
 }
 
+.app-shell:not(.dark) .distance-card.custom-card.active {
+  border-color: #4c94ff;
+  background: #4c94ff;
+  color: #fff;
+  box-shadow: 0 9px 20px rgba(76, 148, 255, 0.28);
+}
+
+.app-shell:not(.dark) .distance-card.custom-card.active span {
+  color: rgba(255, 255, 255, 0.85);
+}
+
 .choice-toggle {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -414,7 +431,8 @@ h2 { font-size: 19px; font-weight: 750; }
   border: 0;
   outline: 0;
   background: transparent;
-  color: #031e4d;
+  color: #fff;
+  caret-color: #fff;
   font-size: 38px;
   font-weight: 780;
   letter-spacing: -.06em;
@@ -778,21 +796,93 @@ input::-webkit-inner-spin-button { appearance: none; }
   color: #fff;
 }
 
-.bottom-summary > div { display: flex; flex-direction: column; }
+.bottom-summary > div { display: flex; flex-direction: column; align-items: center; text-align: center; }
 .bottom-summary span { color: #8fa9bf; font-size: 9px; }
 .bottom-summary strong { margin-top: 4px; color: #f75f20; font-size: 16px; font-variant-numeric: tabular-nums; }
-.legal-links {
+.bottom-summary > .legal-links {
   grid-column: 1 / -1;
-  display: flex;
-  gap: 16px;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
   margin-top: 12px;
 }
-.legal-links a {
+.legal-links a,
+.legal-links .legal-sep {
   color: #8fa9bf;
   font-size: 12px;
   font-weight: 650;
-  text-decoration: none;
+  line-height: 1;
 }
+.legal-links a { text-decoration: none; }
+
+.app-shell:not(.dark) .plan-section,
+.app-shell:not(.dark) .bottom-summary {
+  background: #4c94ff;
+  color: #031e4d;
+}
+
+.app-shell:not(.dark) .plan-section .eyebrow,
+.app-shell:not(.dark) .finish-chip span,
+.app-shell:not(.dark) .plan-summary span,
+.app-shell:not(.dark) .table-head,
+.app-shell:not(.dark) .checkpoints h3,
+.app-shell:not(.dark) .mile-cell small,
+.app-shell:not(.dark) .elapsed-cell small,
+.app-shell:not(.dark) .pace-value small,
+.app-shell:not(.dark) .manual-pace small,
+.app-shell:not(.dark) .checkpoints li small {
+  color: #fff;
+}
+
+.app-shell:not(.dark) .plan-empty,
+.app-shell:not(.dark) .manual-tools p,
+.app-shell:not(.dark) .share-status,
+.app-shell:not(.dark) .save-form label,
+.app-shell:not(.dark) .bottom-summary span,
+.app-shell:not(.dark) .legal-links a,
+.app-shell:not(.dark) .legal-links .legal-sep,
+.app-shell:not(.dark) .plan-section .plan-unit button {
+  color: rgba(3, 30, 77, 0.72);
+}
+
+.app-shell:not(.dark) .finish-chip strong,
+.app-shell:not(.dark) .checkpoints li strong,
+.app-shell:not(.dark) .bottom-summary strong {
+  color: #031e4d;
+}
+
+.app-shell:not(.dark) .plan-summary { background: rgba(255, 255, 255, 0.28); }
+.app-shell:not(.dark) .plan-summary > div { background: rgba(255, 255, 255, 0.35); }
+.app-shell:not(.dark) .splits-table,
+.app-shell:not(.dark) .checkpoints {
+  border-color: rgba(3, 30, 77, 0.12);
+  background: rgba(255, 255, 255, 0.22);
+}
+.app-shell:not(.dark) .table-head { background: rgba(255, 255, 255, 0.28); }
+.app-shell:not(.dark) .table-row,
+.app-shell:not(.dark) .checkpoints li { border-top-color: rgba(3, 30, 77, 0.1); }
+.app-shell:not(.dark) .plan-section .plan-unit { border-color: rgba(3, 30, 77, 0.22); }
+.app-shell:not(.dark) .plan-section .plan-unit button.active {
+  background: rgba(255, 255, 255, 0.7);
+  color: #031e4d;
+}
+.app-shell:not(.dark) .plan-actions button,
+.app-shell:not(.dark) .manual-tools button {
+  border-color: rgba(3, 30, 77, 0.18);
+  background: rgba(255, 255, 255, 0.35);
+  color: #031e4d;
+}
+.app-shell:not(.dark) .plan-actions button:hover,
+.app-shell:not(.dark) .manual-tools button:hover { background: rgba(255, 255, 255, 0.55); }
+.app-shell:not(.dark) .plan-empty { border-color: rgba(3, 30, 77, 0.22); }
+.app-shell:not(.dark) .pace-input.compact input,
+.app-shell:not(.dark) .save-form input {
+  border-color: rgba(3, 30, 77, 0.18);
+  background: rgba(255, 255, 255, 0.7);
+  color: #031e4d;
+}
+.app-shell:not(.dark) .pace-input.compact > span { color: rgba(3, 30, 77, 0.72); }
 
 .legal-page h1 {
   margin: 28px 0 8px;

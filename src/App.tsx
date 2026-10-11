@@ -426,6 +426,7 @@ function Planner({
           </div>
           <div className="legal-links">
             <a href={`${import.meta.env.BASE_URL}privacy`}>Privacy</a>
+            <span aria-hidden="true" className="legal-sep">|</span>
             <a href={`${import.meta.env.BASE_URL}terms`}>Terms</a>
           </div>
         </div>

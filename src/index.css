@@ -1052,6 +1052,7 @@ input::-webkit-inner-spin-button { appearance: none; }
 .dark .saved-workout-list { border-color: #333; background: #202020; }
 .dark .saved-workout-list article { border-top-color: #2c2c2c; color: #e6e6e6; }
 .dark .saved-workout-list article.active { background: #242424; box-shadow: inset 3px 0 0 #f75f20; }
+.dark .saved-run-title strong,
 .dark .saved-run-strategy,
 .dark .saved-run-gear,
 .dark .saved-run-actions button,

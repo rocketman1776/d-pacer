@@ -172,24 +172,32 @@ export interface Checkpoint {
 
 const NAMED_CHECKPOINTS = [{ label: "Half marathon", meters: 21097.5 }];
 
-export function checkpoints(plan: Split[], totalMeters: number, unit: Unit): Checkpoint[] {
+export function checkpoints(
+  plan: Split[],
+  totalMeters: number,
+  unit: Unit,
+  options?: { every5k?: boolean },
+): Checkpoint[] {
   if (plan.length === 0) return [];
 
   const points: { label: string; meters: number }[] = [];
   for (let meters = 5000; meters < totalMeters - 1; meters += 5000) {
     points.push({ label: `${meters / 1000}K`, meters });
   }
-  for (const checkpoint of NAMED_CHECKPOINTS) {
-    if (checkpoint.meters < totalMeters - 1) points.push({ ...checkpoint });
-  }
 
-  const halfway = totalMeters / 2;
-  const sameAsHalfway = points.find(({ meters }) => Math.abs(meters - halfway) < 50);
-  if (sameAsHalfway) {
-    sameAsHalfway.label =
-      sameAsHalfway.label === "Half marathon" ? "Half Marathon" : `${sameAsHalfway.label} · halfway`;
-  } else {
-    points.push({ label: "Halfway", meters: halfway });
+  if (!options?.every5k) {
+    for (const checkpoint of NAMED_CHECKPOINTS) {
+      if (checkpoint.meters < totalMeters - 1) points.push({ ...checkpoint });
+    }
+
+    const halfway = totalMeters / 2;
+    const sameAsHalfway = points.find(({ meters }) => Math.abs(meters - halfway) < 50);
+    if (sameAsHalfway) {
+      sameAsHalfway.label =
+        sameAsHalfway.label === "Half marathon" ? "Half Marathon" : `${sameAsHalfway.label} · halfway`;
+    } else {
+      points.push({ label: "Halfway", meters: halfway });
+    }
   }
 
   return points

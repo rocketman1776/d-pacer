@@ -149,7 +149,10 @@ function Planner({
       state.warmUpSeconds,
     ],
   );
-  const planCheckpoints = useMemo(() => checkpoints(plan, totalMeters, unit), [plan, totalMeters, unit]);
+  const planCheckpoints = useMemo(
+    () => checkpoints(plan, totalMeters, unit, { every5k: state.race === "custom" }),
+    [plan, totalMeters, unit, state.race],
+  );
   const finalTime = plan.at(-1)?.elapsed ?? 0;
 
   const setManualPace = (index: number, pace: number) =>

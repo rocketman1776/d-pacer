@@ -157,6 +157,17 @@ describe("elapsedAt and checkpoints", () => {
     expect(checkpoints(plan, totalMeters, "mi").map((point) => point.label)).toEqual(["5K", "10K", "Halfway", "15K", "20K"]);
   });
 
+  it("lists a 5K checkpoint for each step of a custom distance", () => {
+    const totalMeters = 15 * 1609.344;
+    const plan = generatePlan({ totalUnits: toUnits(totalMeters, "mi"), goalSeconds: 7200, strategy: "even", strength: 5, holdUnits: 1 });
+    expect(checkpoints(plan, totalMeters, "mi", { every5k: true }).map((point) => point.label)).toEqual([
+      "5K",
+      "10K",
+      "15K",
+      "20K",
+    ]);
+  });
+
   it("adds a halfway point when no standard distance matches it", () => {
     const plan = manualPlan(toUnits(10000, "km"), Array(10).fill(300));
     expect(checkpoints(plan, 10000, "km").map((p) => p.label)).toEqual(["5K · halfway"]);

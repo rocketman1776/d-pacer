@@ -1,3 +1,4 @@
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/react";
 import { useEffect, useMemo, useState } from "react";
 import dpacerLogo from "./assets/dpacer-logo.webp";
 import dpacerLogoDark from "./assets/dpacer-logo-dark.webp";
@@ -23,7 +24,6 @@ import {
   resamplePaces,
   segmentDistances,
   toUnits,
-  type Unit,
 } from "./lib/pace";
 import {
   DEFAULT_STATE,
@@ -38,6 +38,8 @@ import {
 } from "./lib/planState";
 import { isBeta } from "./lib/channel";
 import useTheme from "./lib/useTheme";
+
+const clerkEnabled = Boolean(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY);
 
 function initialState(): { state: PlanState; fromLink: boolean } {
   const shared = decodeState(window.location.search);
@@ -133,6 +135,8 @@ export default function App() {
       manualPaces: Array.from({ length: rows }, (_, i) => (i === index ? pace : (state.manualPaces[i] ?? null))),
     });
 
+  const warmUpActive = state.warmUpEnabled && !isManual && maxWarmUpSeconds(totalUnits, goalSeconds) > 0;
+
   const sharePlan = async () => {
     const url = `${window.location.origin}${window.location.pathname}?${encodeState(state)}`;
     if (navigator.share && window.matchMedia("(pointer: coarse)").matches) {
@@ -165,19 +169,25 @@ export default function App() {
             {isBeta && <p className="beta-banner">Beta</p>}
           </div>
           <div className="top-actions">
-            <div aria-label="Pace units" className="unit-switch" role="group">
-              {(["mi", "km"] as Unit[]).map((option) => (
-                <button
-                  aria-pressed={unit === option}
-                  className={unit === option ? "active" : ""}
-                  key={option}
-                  onClick={() => update({ unit: option })}
-                  type="button"
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
+            {clerkEnabled && (
+              <div className="auth-controls">
+                <Show when="signed-out">
+                  <SignInButton>
+                    <button className="auth-button" type="button">
+                      Sign in
+                    </button>
+                  </SignInButton>
+                  <SignUpButton>
+                    <button className="auth-button auth-button-primary" type="button">
+                      Sign up
+                    </button>
+                  </SignUpButton>
+                </Show>
+                <Show when="signed-in">
+                  <UserButton />
+                </Show>
+              </div>
+            )}
             <button
               aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
               className="theme-button"
@@ -251,7 +261,7 @@ export default function App() {
           onResetPaces={() => update({ manualPaces: [] })}
           onShare={sharePlan}
           plan={plan}
-          warmUp={state.warmUpEnabled && !isManual && maxWarmUpSeconds(totalUnits, goalSeconds) > 0}
+          warmUp={warmUpActive}
           raceName={raceName}
           shareStatus={shareStatus}
           strategyName={strategyName}

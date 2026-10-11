@@ -102,11 +102,13 @@ function numberIn(value: unknown, min: number, max: number, fallback: number) {
 export function sanitizeState(raw: unknown): PlanState {
   const input = (raw && typeof raw === "object" ? raw : {}) as Record<string, unknown>;
   const d = DEFAULT_STATE;
+  const race = isRace(input.race) ? input.race : d.race;
+  const customUnit = isUnit(input.customUnit) ? input.customUnit : d.customUnit;
   return {
-    race: isRace(input.race) ? input.race : d.race,
+    race,
     customDistance: clampDistance(input.customDistance, d.customDistance),
-    customUnit: isUnit(input.customUnit) ? input.customUnit : d.customUnit,
-    unit: isUnit(input.unit) ? input.unit : d.unit,
+    customUnit,
+    unit: race === "custom" ? customUnit : isUnit(input.unit) ? input.unit : d.unit,
     planMode: input.planMode === "manual" ? "manual" : "generated",
     goalType: input.goalType === "pace" ? "pace" : "finish",
     finishSeconds: Math.round(numberIn(input.finishSeconds, 0, MAX_GOAL_SECONDS, d.finishSeconds)),

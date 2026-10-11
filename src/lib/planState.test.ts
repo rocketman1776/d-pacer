@@ -14,6 +14,11 @@ describe("sanitizeState", () => {
     expect(state.unit).toBe("km");
     expect(state.manualPaces).toEqual([300, null, null, 310]);
   });
+
+  it("uses the custom unit for a custom race", () => {
+    const state = sanitizeState({ ...DEFAULT_STATE, race: "custom", customUnit: "km", unit: "mi" });
+    expect(state.unit).toBe("km");
+  });
 });
 
 describe("share links", () => {

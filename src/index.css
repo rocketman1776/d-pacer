@@ -60,10 +60,14 @@ button { -webkit-tap-highlight-color: transparent; }
 }
 
 .topbar {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 11px;
+  display: flex;
+  gap: 10px;
   align-items: center;
+  justify-content: space-between;
+}
+
+.auth-controls {
+  display: contents;
 }
 
 .theme-button {
@@ -99,6 +103,8 @@ button { -webkit-tap-highlight-color: transparent; }
 
 .top-actions {
   display: flex;
+  flex-shrink: 0;
+  flex-wrap: nowrap;
   gap: 7px;
   align-items: center;
 }
@@ -113,6 +119,24 @@ button { -webkit-tap-highlight-color: transparent; }
 .theme-button svg {
   width: 20px;
   height: 20px;
+}
+
+.auth-button {
+  padding: 8px 10px;
+  border: 1px solid #dce5ed;
+  border-radius: 12px;
+  background: #fff;
+  color: #031e4d;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.auth-button-primary {
+  border-color: #031e4d;
+  background: #031e4d;
+  color: #fff;
 }
 
 .beta-banner {
@@ -212,73 +236,94 @@ h2 { font-size: 19px; font-weight: 750; }
 
 .distance-card strong { font-size: 14px; }
 .distance-card span { margin-top: 3px; color: #8496a7; font-size: 10px; }
-.distance-card.active span { color: #bfd0df; }
+.distance-card.active span { color: #d7e4ef; }
 
 .custom-card {
   grid-column: 1 / -1;
   min-height: 62px;
 }
 
-.custom-distance {
-  display: grid;
-  grid-template-columns: 1fr auto;
+.custom-card.active {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   gap: 10px;
-  margin-top: 10px;
-  padding: 13px;
-  border: 1px solid #dfe7ef;
-  border-radius: 16px;
-  background: #fff;
+  min-height: 62px;
+  padding: 10px 12px;
+  cursor: default;
+}
+
+.custom-card.active:active {
+  transform: none;
+}
+
+.custom-card-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.custom-distance {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
 }
 
 .custom-distance label {
   display: flex;
+  flex: 0 0 54px;
+  min-width: 48px;
   flex-direction: column;
-  gap: 5px;
-}
-
-.custom-distance label span {
-  color: #7b8e9f;
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
 }
 
 .custom-distance input {
   width: 100%;
   min-width: 0;
-  padding: 8px 10px;
+  padding: 7px 8px;
   border: 1px solid #dae4ed;
   border-radius: 10px;
   outline: 0;
   background: #f8fafc;
   color: #031e4d;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 750;
+  text-align: center;
 }
 
 .unit-toggle {
   display: flex;
-  align-self: end;
+  flex: 0 0 auto;
   padding: 3px;
-  border-radius: 10px;
+  border-radius: 14px;
   background: #e9eff5;
 }
 
 .unit-toggle button {
-  padding: 8px 10px;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 8px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 11px;
   background: transparent;
-  color: #718598;
-  font-size: 9px;
+  color: #6a7f92;
+  font-size: 12px;
   font-weight: 750;
   cursor: pointer;
 }
 
 .unit-toggle button.active {
-  background: #fff;
+  background: #f75f20;
   color: #031e4d;
-  box-shadow: 0 2px 6px rgba(22,50,79,.08);
+}
+
+.distance-card.active .custom-distance input {
+  border-color: transparent;
+  background: #e9eff5;
+  color: #031e4d;
 }
 
 .choice-toggle {
@@ -697,29 +742,6 @@ input::-webkit-inner-spin-button { appearance: none; }
 .bottom-summary span { color: #8fa9bf; font-size: 9px; }
 .bottom-summary strong { margin-top: 4px; color: #f75f20; font-size: 16px; font-variant-numeric: tabular-nums; }
 
-.unit-switch {
-  display: flex;
-  padding: 3px;
-  border: 1px solid #dce5ed;
-  border-radius: 14px;
-  background: #fff;
-}
-
-.unit-switch button {
-  min-width: 34px;
-  height: 34px;
-  padding: 0 8px;
-  border: 0;
-  border-radius: 11px;
-  background: transparent;
-  color: #718598;
-  font-size: 12px;
-  font-weight: 750;
-  cursor: pointer;
-}
-
-.unit-switch button.active { background: #031e4d; color: #fff; }
-
 .field-error { color: #c2410c; font-size: 10px; font-weight: 650; }
 .custom-distance input[aria-invalid="true"] { border-color: #ea580c; }
 
@@ -807,6 +829,7 @@ input::-webkit-inner-spin-button { appearance: none; }
 }
 
 .plan-actions button { padding: 12px; font-size: 12px; }
+.plan-actions button.wide { grid-column: 1 / -1; }
 .plan-actions svg { width: 16px; height: 16px; }
 
 .share-status {
@@ -822,9 +845,6 @@ input::-webkit-inner-spin-button { appearance: none; }
 .dark {
   background: #141414;
 }
-.dark .unit-switch { border-color: #333; background: #242424; }
-.dark .unit-switch button { color: #a0a0a0; }
-.dark .unit-switch button.active { background: #f75f20; color: #031e4d; }
 .dark .field-error { color: #fdba74; }
 
 .dark .ambient-one { background: #f75f20; opacity: .22; }
@@ -837,6 +857,8 @@ input::-webkit-inner-spin-button { appearance: none; }
 }
 
 .dark .theme-button { border-color: #333; background: #242424; color: #f75f20; }
+.dark .auth-button { border-color: #333; background: #242424; color: #e6e6e6; }
+.dark .auth-button-primary { border-color: #f75f20; background: #f75f20; color: #031e4d; }
 .dark .beta-banner { background: #f75f20; color: #fff; }
 .dark .eyebrow { color: #a0a0a0; }
 .dark .intro { border-left-color: #f75f20; background: #202020; }
@@ -844,16 +866,14 @@ input::-webkit-inner-spin-button { appearance: none; }
 .dark .section-title > span { border-color: #333; background: #202020; color: #e6e6e6; }
 
 .dark .distance-card,
-.dark .strategy-card,
-.dark .custom-distance {
+.dark .strategy-card {
   border-color: #333;
   background: #202020;
   color: #e6e6e6;
 }
 
 .dark .distance-card span,
-.dark .strategy-card small,
-.dark .custom-distance label span { color: #a0a0a0; }
+.dark .strategy-card small { color: #a0a0a0; }
 
 .dark .distance-card.active {
   border-color: #f75f20;
@@ -861,11 +881,21 @@ input::-webkit-inner-spin-button { appearance: none; }
   color: #031e4d;
 }
 
-.dark .distance-card.active span { color: #70513b; }
-.dark .custom-distance input { border-color: #333; background: #141414; color: #e6e6e6; }
-.dark .unit-toggle, .dark .choice-toggle { background: #141414; }
-.dark .unit-toggle button, .dark .choice-toggle button { color: #a0a0a0; }
-.dark .unit-toggle button.active, .dark .choice-toggle button.active {
+.dark .distance-card.active span { color: #ead2b4; }
+.dark .distance-card.active .custom-distance input {
+  border-color: #333;
+  background: #141414;
+  color: #e6e6e6;
+}
+.dark .unit-toggle { background: #141414; }
+.dark .unit-toggle button { color: #a0a0a0; }
+.dark .unit-toggle button.active {
+  background: #f75f20;
+  color: #031e4d;
+}
+.dark .choice-toggle { background: #141414; }
+.dark .choice-toggle button { color: #a0a0a0; }
+.dark .choice-toggle button.active {
   background: #2e2e2e;
   color: #fff;
   box-shadow: none;

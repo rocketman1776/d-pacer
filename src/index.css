@@ -1053,10 +1053,10 @@ input::-webkit-inner-spin-button { appearance: none; }
 .dark .saved-workout-list article { border-top-color: #2c2c2c; color: #e6e6e6; }
 .dark .saved-workout-list article.active { background: #242424; box-shadow: inset 3px 0 0 #f75f20; }
 .dark .saved-run-strategy,
-.dark .saved-run-meta,
 .dark .saved-run-gear,
 .dark .saved-run-actions button,
 .dark .saved-run-edit button { color: #a8bccb; }
+.dark .saved-run-meta { color: #fff; }
 .dark .saved-run-gear[aria-expanded="true"] { background: #2c2c2c; color: #e6e6e6; }
 .dark .saved-run-edit input { border-color: #333; background: #141414; color: #e6e6e6; }
 .dark .saved-workout-list .saved-run-confirm { color: #e6e6e6; }

@@ -939,7 +939,7 @@ input::-webkit-inner-spin-button { appearance: none; }
   color: #7b8fa1;
   cursor: pointer;
 }
-.saved-run-gear svg { width: 18px; height: 18px; }
+.saved-run-gear svg { width: 20px; height: 20px; }
 .saved-run-gear[aria-expanded="true"] { background: #eef3f7; color: #031e4d; }
 .saved-run-actions { display: flex; flex-shrink: 0; gap: 2px; }
 .saved-run-actions button,

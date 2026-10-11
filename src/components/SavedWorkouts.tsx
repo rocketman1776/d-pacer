@@ -137,7 +137,7 @@ export default function SavedWorkouts({
                           <span className="saved-run-strategy">· {preview.strategy}</span>
                         </span>
                         <span className="saved-run-meta">
-                          {preview.averagePace} · {preview.totalTime}
+                          {preview.distance} · {preview.averagePace} · {preview.totalTime}
                         </span>
                       </button>
                       <button

@@ -67,7 +67,7 @@ export default function SplitsSection({
         <div className="plan-title">
           <p className="eyebrow">{manual ? "Live calculation" : "Your race plan"}</p>
           <div className="plan-heading-row">
-            <h2 id="plan-heading">{unit === "mi" ? "Mile-by-mile" : "Km-by-km"} splits</h2>
+            <h2 id="plan-heading">{unit === "mi" ? "Mile" : "Kilometer"} splits</h2>
             <div aria-label="Split unit" className="unit-toggle plan-unit" role="group">
               {(["mi", "km"] as Unit[]).map((option) => (
                 <button

@@ -1,4 +1,4 @@
-import { copyFileSync, readFileSync } from "node:fs";
+import { copyFileSync, mkdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig, type Plugin } from "vite";
@@ -34,14 +34,16 @@ function betaCspMeta(): Plugin {
   };
 }
 
-/** Vercel serves this file at /privacy, including under the /beta build. */
+/** Vercel serves privacy/index.html at /privacy, including under the /beta build. */
 function privacyPageFile(): Plugin {
   return {
     name: "privacy-page-file",
     apply: "build",
     writeBundle(options) {
       if (!options.dir) return;
-      copyFileSync(path.join(options.dir, "index.html"), path.join(options.dir, "privacy.html"));
+      const privacyDir = path.join(options.dir, "privacy");
+      mkdirSync(privacyDir, { recursive: true });
+      copyFileSync(path.join(options.dir, "index.html"), path.join(privacyDir, "index.html"));
     },
   };
 }

@@ -170,21 +170,18 @@ export interface Checkpoint {
   elapsed: number;
 }
 
-const CHECKPOINT_CANDIDATES = [
-  { label: "5K", meters: 5000 },
-  { label: "10K", meters: 10000 },
-  { label: "15K", meters: 15000 },
-  { label: "20K", meters: 20000 },
-  { label: "Half marathon", meters: 21097.5 },
-  { label: "30K", meters: 30000 },
-];
+const NAMED_CHECKPOINTS = [{ label: "Half marathon", meters: 21097.5 }];
 
 export function checkpoints(plan: Split[], totalMeters: number, unit: Unit): Checkpoint[] {
   if (plan.length === 0) return [];
 
-  const points = CHECKPOINT_CANDIDATES.filter(({ meters }) => meters < totalMeters - 1).map(
-    ({ label, meters }) => ({ label, meters }),
-  );
+  const points: { label: string; meters: number }[] = [];
+  for (let meters = 5000; meters < totalMeters - 1; meters += 5000) {
+    points.push({ label: `${meters / 1000}K`, meters });
+  }
+  for (const checkpoint of NAMED_CHECKPOINTS) {
+    if (checkpoint.meters < totalMeters - 1) points.push({ ...checkpoint });
+  }
 
   const halfway = totalMeters / 2;
   const sameAsHalfway = points.find(({ meters }) => Math.abs(meters - halfway) < 50);

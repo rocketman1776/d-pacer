@@ -137,7 +137,17 @@ describe("elapsedAt and checkpoints", () => {
     const totalMeters = 42195;
     const plan = generatePlan({ totalUnits: toUnits(totalMeters, "mi"), goalSeconds: 14400, strategy: "even", strength: 5, holdUnits: 1 });
     const points = checkpoints(plan, totalMeters, "mi");
-    expect(points.map((p) => p.label)).toEqual(["5K", "10K", "15K", "20K", "Half marathon · halfway", "30K"]);
+    expect(points.map((p) => p.label)).toEqual([
+      "5K",
+      "10K",
+      "15K",
+      "20K",
+      "Half marathon · halfway",
+      "25K",
+      "30K",
+      "35K",
+      "40K",
+    ]);
     expect(points[4].elapsed).toBeCloseTo(7200, 6);
   });
 

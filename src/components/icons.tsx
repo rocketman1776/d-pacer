@@ -31,6 +31,20 @@ export function ShareIcon() {
   );
 }
 
+export function GearIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" viewBox="0 0 24 24">
+      <path
+        d="M10.1 3.4h3.8l.4 2.1a7 7 0 0 1 1.7 1l2-1 2.6 2.6-1 2a7 7 0 0 1 1 1.7l2.1.4v3.8l-2.1.4a7 7 0 0 1-1 1.7l1 2-2.6 2.6-2-1a7 7 0 0 1-1.7 1l-.4 2.1h-3.8l-.4-2.1a7 7 0 0 1-1.7-1l-2 1-2.6-2.6 1-2a7 7 0 0 1-1-1.7l-2.1-.4V9.6l2.1-.4a7 7 0 0 1 1-1.7l-1-2 2.6-2.6 2 1a7 7 0 0 1 1.7-1l.4-2.1Z"
+        stroke="currentColor"
+        strokeLinejoin="round"
+        strokeWidth="1.8"
+      />
+      <circle cx="12" cy="12" r="2.5" stroke="currentColor" strokeWidth="1.8" />
+    </svg>
+  );
+}
+
 export function PrintIcon() {
   return (
     <svg aria-hidden="true" fill="none" viewBox="0 0 24 24">

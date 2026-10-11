@@ -926,6 +926,21 @@ input::-webkit-inner-spin-button { appearance: none; }
 .saved-run-title strong { font-size: 14px; font-weight: 650; }
 .saved-run-strategy { color: #7b8fa1; font-size: 13px; font-weight: 450; }
 .saved-run-meta { color: #8a9bab; font-size: 12px; font-weight: 450; line-height: 1.35; }
+.saved-run-gear {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #7b8fa1;
+  cursor: pointer;
+}
+.saved-run-gear svg { width: 18px; height: 18px; }
+.saved-run-gear[aria-expanded="true"] { background: #eef3f7; color: #031e4d; }
 .saved-run-actions { display: flex; flex-shrink: 0; gap: 2px; }
 .saved-run-actions button,
 .saved-run-edit button {
@@ -1039,8 +1054,10 @@ input::-webkit-inner-spin-button { appearance: none; }
 .dark .saved-workout-list article.active { background: #242424; box-shadow: inset 3px 0 0 #f75f20; }
 .dark .saved-run-strategy,
 .dark .saved-run-meta,
+.dark .saved-run-gear,
 .dark .saved-run-actions button,
 .dark .saved-run-edit button { color: #a8bccb; }
+.dark .saved-run-gear[aria-expanded="true"] { background: #2c2c2c; color: #e6e6e6; }
 .dark .saved-run-edit input { border-color: #333; background: #141414; color: #e6e6e6; }
 .dark .saved-workout-list .saved-run-confirm { color: #e6e6e6; }
 .dark .bottom-summary { background: #101010; }

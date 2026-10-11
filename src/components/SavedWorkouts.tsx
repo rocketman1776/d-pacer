@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { GearIcon } from "./icons";
 import { deleteWorkout, renameWorkout, savedRunPreview, type SavedWorkout } from "../lib/workouts";
 
 export default function SavedWorkouts({
@@ -15,6 +16,7 @@ export default function SavedWorkouts({
   const [editingId, setEditingId] = useState("");
   const [draft, setDraft] = useState("");
   const [confirmDeleteId, setConfirmDeleteId] = useState("");
+  const [menuId, setMenuId] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
 
@@ -42,6 +44,7 @@ export default function SavedWorkouts({
           {workouts.map((workout) => {
             const editing = editingId === workout.id;
             const confirming = confirmDeleteId === workout.id;
+            const menuOpen = menuId === workout.id;
             const preview = savedRunPreview(workout.state);
             return (
               <article className={workout.id === activeId ? "active" : ""} key={workout.id}>
@@ -97,7 +100,14 @@ export default function SavedWorkouts({
                   </div>
                 ) : (
                   <>
-                    <button className="saved-run-open" onClick={() => onOpen(workout)} type="button">
+                    <button
+                      className="saved-run-open"
+                      onClick={() => {
+                        setMenuId("");
+                        onOpen(workout);
+                      }}
+                      type="button"
+                    >
                       <span className="saved-run-title">
                         <strong>{workout.name}</strong>
                         <span className="saved-run-strategy">· {preview.strategy}</span>
@@ -106,29 +116,45 @@ export default function SavedWorkouts({
                         {preview.distance} · Avg pace {preview.averagePace} · Total {preview.totalTime}
                       </span>
                     </button>
-                    <div className="saved-run-actions">
-                      <button
-                        onClick={() => {
-                          setDraft(workout.name);
-                          setEditingId(workout.id);
-                          setConfirmDeleteId("");
-                          setNotice("");
-                        }}
-                        type="button"
-                      >
-                        Rename
-                      </button>
-                      <button
-                        onClick={() => {
-                          setConfirmDeleteId(workout.id);
-                          setEditingId("");
-                          setNotice("");
-                        }}
-                        type="button"
-                      >
-                        Delete
-                      </button>
-                    </div>
+                    {menuOpen && (
+                      <div className="saved-run-actions">
+                        <button
+                          onClick={() => {
+                            setDraft(workout.name);
+                            setEditingId(workout.id);
+                            setMenuId("");
+                            setConfirmDeleteId("");
+                            setNotice("");
+                          }}
+                          type="button"
+                        >
+                          Rename
+                        </button>
+                        <button
+                          onClick={() => {
+                            setConfirmDeleteId(workout.id);
+                            setEditingId("");
+                            setMenuId("");
+                            setNotice("");
+                          }}
+                          type="button"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                    <button
+                      aria-expanded={menuOpen}
+                      aria-label={`Options for ${workout.name}`}
+                      className="saved-run-gear"
+                      onClick={() => {
+                        setMenuId(menuOpen ? "" : workout.id);
+                        setNotice("");
+                      }}
+                      type="button"
+                    >
+                      <GearIcon />
+                    </button>
                   </>
                 )}
               </article>

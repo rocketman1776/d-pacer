@@ -98,10 +98,11 @@ export default function SavedWorkouts({
                 ) : (
                   <>
                     <button className="saved-run-open" onClick={() => onOpen(workout)} type="button">
-                      <strong>
-                        {workout.name} · {preview.strategy}
-                      </strong>
-                      <span>
+                      <span className="saved-run-title">
+                        <strong>{workout.name}</strong>
+                        <span className="saved-run-strategy">· {preview.strategy}</span>
+                      </span>
+                      <span className="saved-run-meta">
                         {preview.distance} · Avg pace {preview.averagePace} · Total {preview.totalTime}
                       </span>
                     </button>

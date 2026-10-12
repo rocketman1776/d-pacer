@@ -141,6 +141,7 @@ export function DecimalField({
         aria-label={label}
         autoComplete="off"
         inputMode="decimal"
+        size={4}
         type="text"
         value={draft ?? String(value)}
         onFocus={() => {

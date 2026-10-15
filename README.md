@@ -1,4 +1,4 @@
-# DPACER
+# d-pacer
 
 A mobile-first race pace planner. Pick a race distance, set a goal finish time or average pace, choose a strategy (even, negative split, positive split, or progression), and get a split table with rolling average pace, elapsed time, and checkpoint times. You can also enter every split by hand and see how far ahead or behind your goal you are.
 

@@ -1129,7 +1129,7 @@ input::-webkit-inner-spin-button { appearance: none; }
 .saved-run-title strong { color: #8a9bab; font-size: 14px; font-weight: 650; }
 .saved-run-strategy { color: #7b8fa1; font-size: 13px; font-weight: 450; }
 .saved-run-meta { color: #16324f; font-size: 12px; font-weight: 450; line-height: 1.35; }
-.saved-run-gear {
+.saved-run-icon {
   display: grid;
   width: 34px;
   height: 34px;
@@ -1142,8 +1142,8 @@ input::-webkit-inner-spin-button { appearance: none; }
   color: #7b8fa1;
   cursor: pointer;
 }
-.saved-run-gear svg { width: 20px; height: 20px; }
-.saved-run-gear[aria-expanded="true"] { background: #eef3f7; color: #031e4d; }
+.saved-run-icon svg { width: 20px; height: 20px; }
+.saved-run-icon[aria-expanded="true"] { background: #eef3f7; color: #031e4d; }
 .saved-run-actions { display: flex; justify-content: flex-end; gap: 2px; padding: 0 8px 8px; }
 .saved-run-actions button,
 .saved-run-edit button {
@@ -1170,6 +1170,8 @@ input::-webkit-inner-spin-button { appearance: none; }
   font-size: 14px;
 }
 .saved-workouts .field-error { margin: 8px 0 0; }
+.saved-run-status { margin: 8px 0 0; color: #4b6478; font-size: 12px; font-weight: 550; }
+.dark .saved-run-status { color: #a3b3c2; }
 
 .pace-band { display: none; }
 
@@ -1281,13 +1283,13 @@ input::-webkit-inner-spin-button { appearance: none; }
 .dark .saved-workout-list article.active { background: #242424; box-shadow: inset 3px 0 0 #f75f20; }
 .dark .saved-run-title strong,
 .dark .saved-run-strategy,
-.dark .saved-run-gear,
+.dark .saved-run-icon,
 .dark .saved-run-actions button,
 .dark .saved-run-edit button { color: #a8bccb; }
 .dark .saved-run-actions button.saved-run-delete,
 .dark .saved-run-edit button.saved-run-delete { color: #ff6b6b; }
 .dark .saved-run-meta { color: #fff; }
-.dark .saved-run-gear[aria-expanded="true"] { background: #2c2c2c; color: #e6e6e6; }
+.dark .saved-run-icon[aria-expanded="true"] { background: #2c2c2c; color: #e6e6e6; }
 .dark .saved-run-edit input { border-color: #333; background: #141414; color: #e6e6e6; }
 .dark .saved-workout-list .saved-run-confirm { color: #e6e6e6; }
 .dark .bottom-summary,

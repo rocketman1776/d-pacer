@@ -42,14 +42,7 @@ export function readWorkouts(metadata: Record<string, unknown> | null | undefine
   return workouts;
 }
 
-export function savedRunPreview(state: PlanState) {
-  const distance =
-    state.race === "none"
-      ? "No distance"
-      : state.race === "custom"
-        ? `${formatDistance(state.customDistance)} ${UNIT_LABELS[state.customUnit].short}`
-        : RACES.find((race) => race.id === state.race)!.name;
-  const strategy = state.planMode === "manual" ? "Custom" : STRATEGIES.find((item) => item.id === state.strategy)!.name;
+export function planFor(state: PlanState) {
   const totalUnits = toUnits(raceMeters(state), state.unit);
   const goalSeconds = state.goalType === "finish" ? state.finishSeconds : state.targetPace * totalUnits;
   const fallbackPace = totalUnits > 0 && goalSeconds > 0 ? goalSeconds / totalUnits : state.targetPace;
@@ -66,6 +59,18 @@ export function savedRunPreview(state: PlanState) {
           holdUnits: state.holdUnits,
           warmUpSeconds: state.warmUpEnabled ? state.warmUpSeconds : undefined,
         });
+  return { plan, totalUnits };
+}
+
+export function savedRunPreview(state: PlanState) {
+  const distance =
+    state.race === "none"
+      ? "No distance"
+      : state.race === "custom"
+        ? `${formatDistance(state.customDistance)} ${UNIT_LABELS[state.customUnit].short}`
+        : RACES.find((race) => race.id === state.race)!.name;
+  const strategy = state.planMode === "manual" ? "Custom" : STRATEGIES.find((item) => item.id === state.strategy)!.name;
+  const { plan, totalUnits } = planFor(state);
   const finalTime = plan.at(-1)?.elapsed ?? 0;
   const average = totalUnits > 0 ? finalTime / totalUnits : 0;
   return {

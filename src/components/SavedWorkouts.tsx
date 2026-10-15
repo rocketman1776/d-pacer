@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GearIcon } from "./icons";
+import { DownloadIcon, GearIcon } from "./icons";
 import { deleteWorkout, renameWorkout, savedRunPreview, type SavedWorkout } from "../lib/workouts";
 
 export default function SavedWorkouts({
@@ -21,6 +21,7 @@ export default function SavedWorkouts({
   const [menuId, setMenuId] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     if (!menuId) return;
@@ -40,6 +41,25 @@ export default function SavedWorkouts({
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [menuId]);
+
+  const downloadFit = async (workout: SavedWorkout) => {
+    setMenuId("");
+    setNotice("");
+    setStatus("");
+    try {
+      const { workoutFitFile } = await import("../lib/fitWorkout");
+      const { bytes, fileName } = workoutFitFile(workout.name, workout.state);
+      const url = URL.createObjectURL(new Blob([new Uint8Array(bytes)], { type: "application/octet-stream" }));
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setStatus(`Downloaded ${fileName}. Copy it to GARMIN/NewFiles on your watch, then unplug it.`);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "Could not create the .fit file.");
+    }
+  };
 
   const update = async (next: SavedWorkout[]) => {
     setBusy(true);
@@ -143,12 +163,21 @@ export default function SavedWorkouts({
                         </span>
                       </button>
                       <button
+                        aria-label={`Download .fit for ${workout.name}`}
+                        className="saved-run-icon"
+                        onClick={() => void downloadFit(workout)}
+                        type="button"
+                      >
+                        <DownloadIcon />
+                      </button>
+                      <button
                         aria-expanded={menuOpen}
                         aria-label={`Options for ${workout.name}`}
-                        className="saved-run-gear"
+                        className="saved-run-icon"
                         onClick={() => {
                           setMenuId(menuOpen ? "" : workout.id);
                           setNotice("");
+                          setStatus("");
                         }}
                         type="button"
                       >
@@ -199,6 +228,11 @@ export default function SavedWorkouts({
             );
           })}
         </div>
+      )}
+      {status && (
+        <p aria-live="polite" className="saved-run-status">
+          {status}
+        </p>
       )}
       {notice && <p className="field-error">{notice}</p>}
     </section>

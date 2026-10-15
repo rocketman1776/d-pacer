@@ -31,6 +31,14 @@ export function ShareIcon() {
   );
 }
 
+export function DownloadIcon() {
+  return (
+    <svg aria-hidden="true" fill="none" viewBox="0 0 24 24">
+      <path d="M12 4v10m0 0 4.5-4.5M12 14 7.5 9.5M5 16.5V18A2.5 2.5 0 0 0 7.5 20.5h9A2.5 2.5 0 0 0 19 18v-1.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
+    </svg>
+  );
+}
+
 export function GearIcon() {
   return (
     <svg aria-hidden="true" fill="none" viewBox="0 0 24 24">

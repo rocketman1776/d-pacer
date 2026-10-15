@@ -55,7 +55,7 @@ export default function SavedWorkouts({
       link.download = fileName;
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-      setStatus(`Downloaded ${fileName}. Copy it to GARMIN/NewFiles on your watch, then unplug it.`);
+      setStatus(`Downloaded ${fileName}.`);
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Could not create the .fit file.");
     }
@@ -227,6 +227,16 @@ export default function SavedWorkouts({
               </article>
             );
           })}
+        </div>
+      )}
+      {workouts.length > 0 && (
+        <div className="garmin-howto">
+          <p>
+            <strong>Get this on a Garmin.</strong> Use the download arrow, copy the .fit file into GARMIN/NewFiles with the official cable, then unplug. The workout stays on the watch. It will not appear in Garmin Connect.
+          </p>
+          <p>
+            <strong>Start it on the watch.</strong> Press START, choose Run, then UP → Training → Workouts. Open your run, choose START → Do Workout, then press START again to begin.
+          </p>
         </div>
       )}
       {status && (

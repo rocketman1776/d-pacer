@@ -1170,8 +1170,26 @@ input::-webkit-inner-spin-button { appearance: none; }
   font-size: 14px;
 }
 .saved-workouts .field-error { margin: 8px 0 0; }
+.garmin-howto {
+  display: grid;
+  gap: 10px;
+  margin: 10px 0 0;
+  color: #4b6478;
+  font-size: 12px;
+  font-weight: 450;
+  line-height: 1.45;
+}
+.garmin-howto p { margin: 0; }
+.garmin-howto strong {
+  display: block;
+  margin-bottom: 2px;
+  color: #16324f;
+  font-weight: 650;
+}
 .saved-run-status { margin: 8px 0 0; color: #4b6478; font-size: 12px; font-weight: 550; }
+.dark .garmin-howto,
 .dark .saved-run-status { color: #a3b3c2; }
+.dark .garmin-howto strong { color: #e6e6e6; }
 
 .pace-band { display: none; }
 

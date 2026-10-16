@@ -470,8 +470,7 @@ input::-webkit-inner-spin-button { appearance: none; }
   gap: 10px;
 }
 
-.target-pace-entry > span { color: rgba(22,50,79,.62); font-size: 12px; font-weight: 700; }
-.target-pace-entry .pace-input input { color: #fff; caret-color: #fff; }
+.target-pace-entry > span { margin-top: -16px; color: rgba(22,50,79,.62); font-size: 12px; font-weight: 700; }
 
 .pace-input { display: flex; align-items: center; gap: 3px; }
 

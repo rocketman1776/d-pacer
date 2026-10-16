@@ -66,17 +66,15 @@ export function raceMeters(state: Pick<PlanState, "race" | "customDistance" | "c
 /** Keep finish time and average pace describing the same goal when the tab changes. */
 export function syncGoal(state: PlanState, goalType: GoalType): Pick<PlanState, "finishSeconds" | "targetPace"> {
   const units = toUnits(raceMeters(state), state.unit);
-  if (!(units > 0)) return { finishSeconds: state.finishSeconds, targetPace: state.targetPace };
+  const unchanged = { finishSeconds: state.finishSeconds, targetPace: state.targetPace };
+  if (!(units > 0)) return unchanged;
+  const paceFromFinish = Math.min(MAX_PACE_SECONDS, Math.max(0, Math.round(state.finishSeconds / units)));
+  const finishFromPace = Math.min(MAX_GOAL_SECONDS, Math.round(state.targetPace * units));
   if (goalType === "finish") {
-    return {
-      finishSeconds: Math.min(MAX_GOAL_SECONDS, Math.round(state.targetPace * units)),
-      targetPace: state.targetPace,
-    };
+    // Pace is whole seconds, so converting it back would drift the finish time unless the pace was edited.
+    return paceFromFinish === state.targetPace ? unchanged : { ...unchanged, finishSeconds: finishFromPace };
   }
-  return {
-    finishSeconds: state.finishSeconds,
-    targetPace: Math.min(MAX_PACE_SECONDS, Math.max(0, Math.round(state.finishSeconds / units))),
-  };
+  return finishFromPace === state.finishSeconds ? unchanged : { ...unchanged, targetPace: paceFromFinish };
 }
 
 const isUnit = (value: unknown): value is Unit => value === "mi" || value === "km";

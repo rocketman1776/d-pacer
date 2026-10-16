@@ -79,6 +79,19 @@ describe("syncGoal", () => {
     expect(synced.targetPace).toBe(Math.round(state.finishSeconds / units));
     expect(formatTime(synced.targetPace)).toBe(formatTime(state.finishSeconds / units));
   });
+
+  it("keeps the finish time when switching tabs without editing the pace", () => {
+    const start: PlanState = { ...DEFAULT_STATE, race: "marathon", goalType: "finish", finishSeconds: 4 * 3600 };
+    const onPace = { ...start, goalType: "pace" as const, ...syncGoal(start, "pace") };
+    const back = syncGoal(onPace, "finish");
+    expect(back.finishSeconds).toBe(4 * 3600);
+  });
+
+  it("keeps the pace when switching tabs without editing the finish time", () => {
+    const start: PlanState = { ...DEFAULT_STATE, race: "half", goalType: "pace", targetPace: 9 * 60 + 9 };
+    const onFinish = { ...start, goalType: "finish" as const, ...syncGoal(start, "finish") };
+    expect(syncGoal(onFinish, "pace").targetPace).toBe(9 * 60 + 9);
+  });
 });
 
 describe("raceMeters", () => {

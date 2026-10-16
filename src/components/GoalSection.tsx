@@ -1,6 +1,6 @@
 import { UNIT_LABELS, formatTime } from "../lib/pace";
 import { MAX_PACE_SECONDS, type GoalType, type PlanState } from "../lib/planState";
-import { PaceInput, TimeField } from "./fields";
+import { TimeField } from "./fields";
 import SectionTitle from "./SectionTitle";
 
 export default function GoalSection({
@@ -21,6 +21,10 @@ export default function GoalSection({
   const minutes = Math.floor((finishSeconds % 3600) / 60);
   const seconds = finishSeconds % 60;
   const setFinish = (h: number, m: number, s: number) => update({ finishSeconds: h * 3600 + m * 60 + s });
+  const pace = Math.max(0, Math.round(state.targetPace));
+  const paceMinutes = Math.floor(pace / 60);
+  const paceSeconds = pace % 60;
+  const setPace = (m: number, s: number) => update({ targetPace: Math.min(MAX_PACE_SECONDS, m * 60 + s) });
   const unitLabel = UNIT_LABELS[unit];
   const hasGoal = goalSeconds > 0;
 
@@ -56,12 +60,10 @@ export default function GoalSection({
           <TimeField label="seconds" max={59} value={seconds} onChange={(s) => setFinish(hours, minutes, s)} />
         </div>
       ) : (
-        <div className="target-pace-entry">
-          <PaceInput
-            label="Goal pace"
-            seconds={state.targetPace}
-            onChange={(targetPace) => update({ targetPace: Math.min(MAX_PACE_SECONDS, targetPace) })}
-          />
+        <div aria-label="Goal pace" className="time-entry target-pace-entry" role="group">
+          <TimeField label="minutes" max={99} value={paceMinutes} onChange={(m) => setPace(m, paceSeconds)} />
+          <b aria-hidden="true">:</b>
+          <TimeField label="seconds" max={59} value={paceSeconds} onChange={(s) => setPace(paceMinutes, s)} />
           <span>per {unitLabel.singular}</span>
         </div>
       )}

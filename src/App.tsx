@@ -40,6 +40,7 @@ import {
   type PlanState,
 } from "./lib/planState";
 import { isBeta } from "./lib/channel";
+import { downloadWorkoutFit } from "./lib/downloadFit";
 import { MAX_SAVED_WORKOUTS, readWorkouts, replaceWorkout, withWorkouts, type SavedWorkout } from "./lib/workouts";
 import useTheme from "./lib/useTheme";
 
@@ -56,10 +57,13 @@ function initialState(): { state: PlanState; fromLink: boolean } {
 
 function Planner({
   signedIn = false,
+  signedOut = !signedIn,
   savedWorkouts = [],
   onPersist,
 }: {
   signedIn?: boolean;
+  /** False while Clerk is still loading, so signed-in users don't see the guest actions flash. */
+  signedOut?: boolean;
   savedWorkouts?: SavedWorkout[];
   onPersist?: (workouts: SavedWorkout[]) => Promise<void>;
 }) {
@@ -244,6 +248,19 @@ function Planner({
     document.getElementById("race-distance")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const downloadPlan = async () => {
+    if (!plan.length) {
+      setShareStatus("Choose a race distance before downloading.");
+      return;
+    }
+    try {
+      await downloadWorkoutFit(`${raceName} ${strategyName}`, state);
+      setShareStatus("");
+    } catch (error) {
+      setShareStatus(error instanceof Error ? error.message : "Could not create the .fit file.");
+    }
+  };
+
   const sharePlan = async () => {
     const url = `${window.location.origin}${window.location.pathname}?${encodeState(state)}`;
     if (navigator.share && window.matchMedia("(pointer: coarse)").matches) {
@@ -368,6 +385,8 @@ function Planner({
           onResetPaces={() => update({ manualPaces: [] })}
           onSave={signedIn ? (activeWorkout ? () => void confirmUpdate() : openSave) : undefined}
           onSaveAsNew={signedIn && activeWorkout ? openSaveAsNew : undefined}
+          onDownload={signedOut ? () => void downloadPlan() : undefined}
+          garminHowTo={signedOut && plan.length > 0}
           saveBusy={saveBusy}
           onShare={sharePlan}
           onUnitChange={(nextUnit) => update({ unit: nextUnit })}
@@ -458,6 +477,7 @@ function ClerkPlanner() {
       onPersist={isSignedIn ? persist : undefined}
       savedWorkouts={savedWorkouts}
       signedIn={Boolean(isLoaded && isSignedIn)}
+      signedOut={isLoaded && !isSignedIn}
     />
   );
 }

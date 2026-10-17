@@ -26,7 +26,7 @@ export const STRATEGIES: { id: Strategy; name: string; description: string }[] =
 
 export const MIN_DISTANCE = 1;
 export const MAX_DISTANCE = 200;
-export const MIN_STRENGTH = 2;
+export const MIN_STRENGTH = 1;
 export const MAX_STRENGTH = 12;
 
 // Floating-point unit conversions can leave e.g. 3.0000000000000004 miles,

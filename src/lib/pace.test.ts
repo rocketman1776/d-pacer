@@ -66,6 +66,13 @@ describe("generatePlan", () => {
     expect(plan[9].pace / 500).toBeCloseTo(0.95, 6);
   });
 
+  it("allows a 1% spread for positive, negative, and progression", () => {
+    const args = { totalUnits: 10, goalSeconds: 5000, strength: 1, holdUnits: 1 };
+    expect(generatePlan({ ...args, strategy: "positive" })[0].pace / 500).toBeCloseTo(0.99, 6);
+    expect(generatePlan({ ...args, strategy: "negative" })[0].pace / 500).toBeCloseTo(1.01, 6);
+    expect(generatePlan({ ...args, strategy: "progression" })[0].pace / 500).toBeCloseTo(1.01, 6);
+  });
+
   it("progression holds each pace for the chosen number of units", () => {
     const plan = generatePlan({ totalUnits: 9, goalSeconds: 4500, strategy: "progression", strength: 6, holdUnits: 3 });
     const paces = plan.map((s) => Math.round(s.pace * 1000));

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import GarminHowTo from "./GarminHowTo";
 import { DownloadIcon, GearIcon } from "./icons";
+import { downloadWorkoutFit } from "../lib/downloadFit";
 import { deleteWorkout, renameWorkout, savedRunPreview, type SavedWorkout } from "../lib/workouts";
 
 export default function SavedWorkouts({
@@ -47,14 +49,7 @@ export default function SavedWorkouts({
     setNotice("");
     setStatus("");
     try {
-      const { workoutFitFile } = await import("../lib/fitWorkout");
-      const { bytes, fileName } = workoutFitFile(workout.name, workout.state);
-      const url = URL.createObjectURL(new Blob([new Uint8Array(bytes)], { type: "application/octet-stream" }));
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = fileName;
-      link.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      const fileName = await downloadWorkoutFit(workout.name, workout.state);
       setStatus(`Downloaded ${fileName}.`);
     } catch (error) {
       setNotice(error instanceof Error ? error.message : "Could not create the .fit file.");
@@ -229,16 +224,7 @@ export default function SavedWorkouts({
           })}
         </div>
       )}
-      {workouts.length > 0 && (
-        <div className="garmin-howto">
-          <p>
-            <strong>Get this on a Garmin.</strong> Use the download arrow, copy the .fit file into GARMIN/NewFiles with the official cable, then unplug. The workout stays on the watch. It will not appear in Garmin Connect.
-          </p>
-          <p>
-            <strong>Start it on the watch.</strong> Press START, choose Run, then UP → Training → Workouts. Open your run, choose START → Do Workout, then press START again to begin.
-          </p>
-        </div>
-      )}
+      {workouts.length > 0 && <GarminHowTo />}
       {status && (
         <p aria-live="polite" className="saved-run-status">
           {status}

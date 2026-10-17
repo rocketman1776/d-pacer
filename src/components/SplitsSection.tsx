@@ -1,6 +1,7 @@
 import { UNIT_LABELS, formatDelta, formatDistance, formatTime, type Checkpoint, type Split, type Unit } from "../lib/pace";
+import GarminHowTo from "./GarminHowTo";
 import { PaceInput } from "./fields";
-import { FlagIcon, PrintIcon, ShareIcon } from "./icons";
+import { DownloadIcon, FlagIcon, PrintIcon, ShareIcon } from "./icons";
 
 export default function SplitsSection({
   plan,
@@ -20,6 +21,8 @@ export default function SplitsSection({
   onUnitChange,
   onSave,
   onSaveAsNew,
+  onDownload,
+  garminHowTo = false,
   saveBusy = false,
   saving,
   warmUp = false,
@@ -42,6 +45,8 @@ export default function SplitsSection({
   onUnitChange: (unit: Unit) => void;
   onSave?: () => void;
   onSaveAsNew?: () => void;
+  onDownload?: () => void;
+  garminHowTo?: boolean;
   saveBusy?: boolean;
   saving?: {
     name: string;
@@ -213,6 +218,12 @@ export default function SplitsSection({
               <PrintIcon />
               Print pace band
             </button>
+            {onDownload && (
+              <button className="wide" onClick={onDownload} type="button">
+                <DownloadIcon />
+                Download for Garmin
+              </button>
+            )}
             {onSave && !saving && (
               <>
                 <button className="wide" disabled={saveBusy} onClick={onSave} type="button">
@@ -257,6 +268,7 @@ export default function SplitsSection({
           <p aria-live="polite" className="share-status">
             {shareStatus}
           </p>
+          {garminHowTo && <GarminHowTo downloadLabel="Download for Garmin" />}
         </>
       )}
     </section>

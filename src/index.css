@@ -244,7 +244,7 @@ h2 { font-size: 19px; font-weight: 750; }
   border-color: #4c94ff;
   background: #4c94ff;
   color: #fff;
-  box-shadow: 0 9px 20px rgba(76, 148, 255, 0.28);
+  box-shadow: 0 9px 20px rgba(3, 30, 77, 0.16);
 }
 
 .distance-card strong { font-size: 14px; }
@@ -352,7 +352,7 @@ h2 { font-size: 19px; font-weight: 750; }
   border-color: #4c94ff;
   background: #4c94ff;
   color: #fff;
-  box-shadow: 0 9px 20px rgba(76, 148, 255, 0.28);
+  box-shadow: 0 9px 20px rgba(3, 30, 77, 0.16);
 }
 
 .app-shell:not(.dark) .distance-card.custom-card.active span {
@@ -523,9 +523,10 @@ input::-webkit-inner-spin-button { appearance: none; }
   color: #031e4d;
   text-align: left;
   cursor: pointer;
+  transition: .16s ease;
 }
 
-.strategy-card.active { border-color: #031e4d; background: #eef5fb; }
+.strategy-card.active { border-color: #031e4d; background: #eef5fb; box-shadow: 0 9px 20px rgba(3, 30, 77, 0.16); }
 
 .strategy-radio {
   grid-row: 1 / 3;
@@ -1029,12 +1030,27 @@ input::-webkit-inner-spin-button { appearance: none; }
 .plan-actions svg { width: 16px; height: 16px; }
 
 .share-status {
-  min-height: 1em;
-  margin: 10px 0 0;
+  min-height: 0;
+  margin: 0;
   color: #a5bbcd;
   font-size: 10px;
   overflow-wrap: anywhere;
 }
+
+.share-status:not(:empty) {
+  min-height: 1em;
+  margin: 10px 0 0;
+}
+
+.plan-section .garmin-howto {
+  margin: 12px 0 0;
+  color: #a5bbcd;
+}
+.plan-section .garmin-howto strong { color: #fff; }
+.app-shell:not(.dark) .plan-section .garmin-howto { color: #fff; }
+.app-shell:not(.dark) .plan-section .garmin-howto strong { color: #031e4d; }
+.dark .plan-section .garmin-howto { color: #a3b3c2; }
+.dark .plan-section .garmin-howto strong { color: #e6e6e6; }
 
 .save-form {
   display: grid;
@@ -1229,6 +1245,7 @@ input::-webkit-inner-spin-button { appearance: none; }
   border-color: #f75f20;
   background: #f75f20;
   color: #031e4d;
+  box-shadow: 0 9px 20px rgba(247, 95, 32, 0.18);
 }
 
 .dark .distance-card.active span { color: #ead2b4; }
@@ -1262,7 +1279,7 @@ input::-webkit-inner-spin-button { appearance: none; }
 
 .dark .goal-card { color: #031e4d; }
 .dark .goal-card .section-title > span { border-color: rgba(22,50,79,.16); background: rgba(255,255,255,.3); color: #031e4d; }
-.dark .strategy-card.active { border-color: #f75f20; background: #242424; }
+.dark .strategy-card.active { border-color: #f75f20; background: #242424; box-shadow: 0 9px 20px rgba(247, 95, 32, 0.18); }
 .dark .strategy-card.active .strategy-radio { border-color: #f75f20; }
 .dark .strategy-controls { background: #202020; }
 .dark .control-heading span, .dark .hold-control span, .dark .range-labels { color: #a0a0a0; }

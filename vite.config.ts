@@ -34,7 +34,7 @@ function betaCspMeta(): Plugin {
   };
 }
 
-/** Vercel serves privacy/index.html and terms/index.html, including under the /beta build. */
+/** Vercel and CloudFront serve privacy, terms, 403, and 404 from copied index.html files. */
 function legalPageFiles(): Plugin {
   return {
     name: "legal-page-files",
@@ -42,7 +42,9 @@ function legalPageFiles(): Plugin {
     writeBundle(options) {
       if (!options.dir) return;
       const indexHtml = path.join(options.dir, "index.html");
-      for (const page of ["privacy", "terms"]) {
+      copyFileSync(indexHtml, path.join(options.dir, "403.html"));
+      copyFileSync(indexHtml, path.join(options.dir, "404.html"));
+      for (const page of ["privacy", "terms", "403", "404"]) {
         const pageDir = path.join(options.dir, page);
         mkdirSync(pageDir, { recursive: true });
         copyFileSync(indexHtml, path.join(pageDir, "index.html"));

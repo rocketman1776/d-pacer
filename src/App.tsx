@@ -6,6 +6,8 @@ import DistanceSection from "./components/DistanceSection";
 import GoalSection from "./components/GoalSection";
 import { MoonIcon, SunIcon } from "./components/icons";
 import PaceBand from "./components/PaceBand";
+import ForbiddenPage, { isForbiddenPath } from "./components/ForbiddenPage";
+import NotFoundPage, { isPlannerPath } from "./components/NotFoundPage";
 import PrivacyPage, { isPrivacyPath } from "./components/PrivacyPage";
 import TermsPage, { isTermsPath } from "./components/TermsPage";
 import SectionTitle from "./components/SectionTitle";
@@ -485,6 +487,8 @@ function ClerkPlanner() {
 export default function App() {
   if (isPrivacyPath()) return <PrivacyPage />;
   if (isTermsPath()) return <TermsPage />;
+  if (isForbiddenPath()) return <ForbiddenPage />;
+  if (!isPlannerPath()) return <NotFoundPage />;
   if (!clerkEnabled) return <Planner />;
   return <ClerkPlanner />;
 }

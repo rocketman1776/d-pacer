@@ -11,7 +11,7 @@ export default function NotFoundPage() {
   return (
     <ErrorSplitPage
       code="404"
-      detail="That page is not part of the plan. The split below never got written."
+      detail="Please return back to starting line."
       result="Did Not Find (DNF)"
       title="This mile isn't on the course"
     />
